@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang='en'>
+<meta charset='utf-8'>
+<head>
+<title>小程序后台管理</title>
+
+<!-- 警告对话框 -->	
+<script src="sweetalert/sweetalert.min.js"></script>
+<link rel="stylesheet" type="text/css" href="sweetalert/sweetalert.css">  
+
+<link rel='stylesheet' type='text/css' href='css/bootstrap2.min.css'>
+<link rel="stylesheet"
+	href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css"><!-- 必须注意引入顺序  -->
+<link rel='stylesheet' type='text/css' href='css/style.css'>
+
+<script type='text/javascript' src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script type='text/javascript' src="https://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type='text/javascript' src="js/main.js"></script>
+<script type="text/javascript" src="js/util.js"></script>
+
+<link href="bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+
+<style>
+a:hover {
+	text-decoration: none
+}
+
+.sideBar ul{
+	border: 1px solid #eee;
+}
+</style>
+
+</head>
+
+<body>
+	<header class='navbar blue navbar-fixed-top'>
+		<div class='navbar-inner'>
+			<div class='container-fluid'>
+				<a class='brand pull-left' ><img src="img/icon.png" width="20px" height="auto">&nbsp;
+				</a><a  class='brand pull-left' id="brand">For</a>
+				<ul class='nav pull-right'>
+					<li><a href="../xProgram/user/logout.do" rel='tooltip'
+						title='退出'><i class='icon-white icon-off'></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</header>
+
+	<section class='container-fluid pad20'>
+		<section class='row-fluid'>
+			<div class="sideBar left">
+				<br />
+				<ul>
+					
+					<li class="active"><li><figure id="aeject">
+							<a href="javascript:void(0);" target="content"> <i
+								class='icon-eject'></i> 商品管理&nbsp;&nbsp;
+
+							</a>
+					</figure><hr/></li>
+					
+					<li class='dropper'>
+						<figure>
+							<i class='icon-circle-arrow-down'></i>
+							<a>页面管理&nbsp;&gt;</a>
+						</figure>
+						<hr/>
+						<ul class='subSide'>
+							<li><a href="javascript:void(0);" target="content" id="pageSlide"><i
+									class='icon-fire'></i>顶部幻灯片</a><hr/></li>
+							<li><a a href="javascript:void(0);" target="content" id="pageSpecial"><i
+									class='icon-fire'></i>今日特价</a><hr/></li>
+							<li><a a href="javascript:void(0);" target="content" id="pageGroom"><i
+									class='icon-fire'></i>推荐商品</a><hr/></li>
+						</ul>
+					</li>
+					
+					<li><figure id="orders">
+					     <a href="javascript:void(0);" ><i
+					        class="icon-circle-arrow-down"></i> 订单管理&nbsp;&nbsp;
+					      </a>
+					</figure><hr /></li>
+					
+					<li><figure id="auser">
+							<a href="javascript:void(0);" target="content"> <i
+								class='icon-user'></i> 用戶管理&nbsp;&nbsp;
+							</a>
+					</figure><hr /></li>
+					
+					<li><figure id="auser">
+							<a href="javascript:void(0);" target="content"> <i
+								class='icon-fire'></i> 销量统计&nbsp;&nbsp;
+							</a>
+					</figure><hr /></li>
+					
+					<li><figure id="setting">
+							<a href="javascript:void(0);" target="content"> <i
+								class='icon-cog'></i> 后台设置&nbsp;&nbsp;
+							</a>
+					</figure><hr /></li>	
+				</ul>
+			</div>
+
+
+           <div id="content" src="" foodId="">
+		
+		</section>
+	</section>
+			
+<style type="text/css">  <!--避免bootstrap框架窗口变化造成元素高度的变化 -->
+ .left{           
+    position: absolute;
+    *position: relative;
+    float: left;
+ }
+#content{
+   margin-left:100px;
+   position: absolute;
+}
+
+.change{
+  color:red;
+}
+
+ .result-icon{
+ position: relative;
+  top:2px;
+  display: inline-block;
+
+   width:26px;
+   height:15px;
+  }
+ .result-fail{
+  background-image:url('img/weixin.png') ;
+  background-repeat:no-repeat;
+  -moz-background-size: 25px 18px;
+    -webkit-background-size: 25px 18px;
+    -o-background-size: 25px 18px;
+    background-size: 25px 18px;
+}
+
+}
+</style>
+
+<script type="text/javascript" src="assets/bootstrap-table/bootstrap-table.js"></script>
+<script type="text/javascript" src="pages/js/admin.js"></script>
+
+<script type="text/javascript">
+ var u = navigator.userAgent;
+ var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+ var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+ if(isAndroid||isiOS){
+	location.href="mobile/admin/index.html";
+ }
+</script>
+
+</body>
+</html>

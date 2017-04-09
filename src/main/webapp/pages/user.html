@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>用户管理</title>
+
+<link rel="stylesheet"
+	href="assets/bootstrap-table/bootstrap-table.css">
+<link rel="stylesheet"
+	href="assets/bootstrap-table/bootstrap-editable.css">
+<script src="assets/bootstrap-table/jquery.min.js"></script>
+<script src="assets/bootstrap-table/bootstrap.min.js"></script>
+<script src="assets/bootstrap-table/bootstrap-table.js"></script>
+<script src="assets/bootstrap-table/bootstrap-table-export.js"></script>
+<script src="assets/bootstrap-table/tableExport.js"></script>
+<script src="assets/bootstrap-table/bootstrap-table-editable.js"></script>
+<script src="assets/bootstrap-table/bootstrap-editable.js"></script>
+<script src="js/bootstrap-table-zh-CN.min.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
+<![endif]-->
+<style>
+.ml10 {
+	margin-left: 10px;
+}
+
+#operate-success {
+
+	font-size: 16px;
+	background-color: #8AC007;
+	color: #FBFBFB;
+	visibility: hidden
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="page-header">
+			<h1>用户管理&nbsp;&nbsp;</h1>
+		</div>
+		<div style="text-align: center;">
+			<span id="operate-success">设置成功</span>
+		</div>
+		<div>
+			<table id="table" data-toggle="table" data-show-export="false"
+				data-url="user/getAllUser.do" data-search="true"
+				data-show-refresh="true" data-show-toggle="true"
+				data-side-pagination="server" data-pagination="true"
+				data-show-columns="true">
+				<thead>
+					<tr>
+						<!-- <th data-field="state" data-checkbox="true"></th> -->
+						<th data-field="nickname">昵称</th>
+						<th data-field="imgUrl">头像</th>
+						<th data-field="subScribe">关注</th>
+						<th data-field="subscribeTime" data-sortable="true">关注时间</th>
+						<th data-field="sex">性别</th>
+						<th data-field="phone">手机号</th>
+						<th data-field="country" data-visible="false">国家</th>
+						<th data-field="province" data-visible="false">省份</th>
+						<th data-field="city" data-visible="false">城市</th>
+						<th data-field="groupId" data-visible="false">分组ID</th>
+						<th data-field="defaultAddress" data-visible="false">默认地址</th>
+						<th data-field="totalAmount" data-sortable="true">总消费金额</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+	<script>
+		//全局变量
+
+	</script>
+</body>
+</html>

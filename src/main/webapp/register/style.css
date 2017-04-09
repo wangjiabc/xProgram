@@ -1,0 +1,276 @@
+/*--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+--*/
+/* start editing from here */
+
+#re_ver_input{
+	margin:0 0 0 20px;
+	width:40px;
+}
+
+
+#loginOpt{
+	position:relative;
+	float:right;
+    height:20px;
+    font-size:10px;
+    text-decoration:underline;
+    margin:10px 0 0 5px ;
+}
+
+.login-bottom h3 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+}
+.login-bottom h3 a {
+  font-size: 25px;
+  font-weight: 500;
+  color: #fff;
+}
+.login-bottom h3 a:hover {
+	color:#696969;
+	transition: 0.5s all;
+  -webkit-transition: 0.5s all;
+  -moz-transition: 0.5s all;
+  -o-transition: 0.5s all;
+}
+.copyright {
+  padding: 150px 0px 0px 0px;
+  text-align: center;
+}
+.copyright p {
+  font-size: 15px;
+  font-weight: 400;
+  color: #fff;
+}
+.copyright p a{
+  font-size: 15px;
+  font-weight: 400;
+  color: #E15748;
+}
+.copyright p a:hover{
+	color: #fff;
+	 transition: 0.5s all;
+  -webkit-transition: 0.5s all;
+  -moz-transition: 0.5s all;
+  -o-transition: 0.5s all;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*--login end here--*/
+/*--meadia quiries start here--*/
+/*----------------------ajax css样式---------------------------*/
+
+.action_po_top{
+  padding:5px 5px 5px 30px;
+  diaplay:block;
+  font-size: 15px;
+  
+ }
+ 
+ .action_po{
+  position:absolute;
+  left: 400px;
+  width:280px;
+  border: 1px solid blue;
+   background: url('input.png') no-repeat;
+   background-color:#f0ffff;
+  background-position: left 6px top 6px;  
+  background-size:16px 14px;
+
+ }
+ 
+ .action_pw{
+  position:absolute;
+  left: 400px;
+  width:120px;
+  top:214px;
+  border: 1px solid #cccccc ;
+  background-color:#f0ffff;
+  background-position: left 6px top 6px; 
+  background-size:16px 14px;
+ }
+ 
+ .action_pw .action_po_top{
+  padding: 5px 5px 5px 15px;
+ }
+ 
+ 
+ .action_pwre{
+  position:absolute;
+  left: 400px;
+  width:120px;
+  top:158px;
+  border: 1px solid #cccccc ;
+  background-color:#f0ffff;
+  background-position: left 6px top 6px; 
+  background-size:16px 14px;
+ }
+ 
+ .action_pwre .action_po_top{
+  padding: 5px 5px 5px 15px;
+ }
+ 
+ .wrong{
+  position:absolute;
+  left: 400px;
+  width:280px;
+  border:1px solid red;
+  background: url('wrong.jpg') no-repeat;
+  background-color:#ffe4e1;
+  background-position: left 6px top 6px; 
+  background-size:15px 15px;
+  display: block;
+ }
+ 
+ .right{
+  position:absolute;
+  left: 400px;
+  height:30px;
+  width:280px;
+  background: url('right.jpg') no-repeat;
+  background-position: left 6px top 6px; 
+  background-size:15px 15px;
+  display: block;
+ }
+
+ 
+
+ #mobile_Tip .action_po{
+  top:70px;
+ }
+ 
+ #mobile_Tip .wrong{
+  top:70px;
+ }
+ 
+ #mobile_Tip .right{
+  top:70px;
+ }
+ 
+ #password .action_po{
+  top:114px;
+
+ }
+ 
+ #password .wrong{
+  top:114px;
+
+ }
+
+ #password .right{
+  top:114px;
+ }
+ 
+ 
+ 
+ #repassword .action_po{
+  top:160px;
+
+ }
+ 
+ #repassword .wrong{
+  top:160px;
+
+ }
+
+ #repassword .right{
+  top:160px;
+ }
+ 
+ #revalidate .action_po{
+  top:224px;
+ }
+ 
+ #revalidate .wrong{
+  top:224px;
+ }
+ 
+ #revalidate .right{
+  top:224px;
+ }
+
+ #inten p{
+  height: 10px;
+  margin: 0 0 8px 5px;
+ }
+ 
+ #inten table{
+  position: relative;
+  margin:0 0 5px 10px;
+  height: 10px;
+  width: 100px;
+  border:2px solid #cccccc;
+ }
+ 
+ #inten table td{
+  border:1px solid #cccccc;
+ }
+ 
+ 
+ #validate .action_po{
+   top:160px;
+  left:400px;
+ }
+ 
+ #validate .wrong{
+  top:160px;
+  left:400px;
+ }
+ 
+ #validate .right{
+   top:160px;
+  left:400px;
+ }
+ 
+ #telephone .action_po{
+  top:210px;
+ }
+ 
+ #telephone .wrong{
+  top:210px;
+ }
+ 
+ #telephone .right{
+  top:210px;
+ }
+ 
+  #email .action_po{
+  top:253px;
+ }
+ 
+ #email .wrong{
+  top:253px;
+ }
+ 
+ #email .right{
+  top:253px;
+ }
+ 
+ #ver .wrong{
+  top:300px;
+ }
+ 
+ #mobile_chk .wrong{
+   top:335px;
+ }
+ 
+ .f12{
+  font-size:10px;
+ }

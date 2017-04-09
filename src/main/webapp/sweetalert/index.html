@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>演示：漂亮实用的提示框插件SweetAlert</title>
+<meta name="keywords" content="Javascript" />
+<meta name="description" content="Helloweba文章结合实例演示HTML5、CSS3、jquery、PHP等WEB技术应用。" />
+
+<script type="text/javascript" src="../../jquery.js"></script>
+
+<script src="sweetalert.min.js"></script>
+<link rel="stylesheet" type="text/css" href="sweetalert.css">
+</head>
+
+<body>
+<div id="header">
+   <div id="logo"><h1><a href="http://www.helloweba.com" title="返回helloweba首页">helloweba</a></h1></div>
+</div>
+<div id="main">
+	<h2 class="top_title"><a href="http://www.helloweba.com/view-blog-308.html">漂亮实用的提示框插件SweetAlert</a></h2>
+	
+	<div class="demo">
+
+		<div class="demo_4">
+			提示确认：<button>点击这里</button> 
+		</div>
+
+	</div>
+</div>
+<script>
+$(function(){
+
+	$(".demo_4 button").click(function(){
+		 swal({
+			title: "您确定要删除吗？", 
+			text: "您确定要删除这条数据？", 
+			type: "warning",
+			showCancelButton: true,
+			closeOnConfirm: false,
+			confirmButtonText: "是的，我要删除",
+			confirmButtonColor: "#ec6c62"
+			}, function() {
+				$.ajax({
+					url: "do.php",
+					type: "DELETE"
+				}).done(function(data) {
+					swal("操作成功!", "已成功删除数据！", "success");
+				}).error(function(data) {
+					swal("OMG", "删除操作失败了!", "error");
+				});
+			});
+	});
+	
+
+});
+</script>
+
+<div id="footer">
+    <p>Powered by helloweba.com  允许转载、修改和使用本站的DEMO，但请注明出处：<a href="http://www.helloweba.com">www.helloweba.com</a></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>用户管理</title>
+
+<link rel="stylesheet"
+	href="assets/bootstrap-table/bootstrap-table.css">
+<link rel="stylesheet"
+	href="assets/bootstrap-table/bootstrap-editable.css">
+<script src="assets/bootstrap-table/jquery.min.js"></script>
+<script src="assets/bootstrap-table/bootstrap.min.js"></script>
+<script src="assets/bootstrap-table/bootstrap-table.js"></script>
+<script src="assets/bootstrap-table/bootstrap-table-export.js"></script>
+<script src="assets/bootstrap-table/tableExport.js"></script>
+<script src="assets/bootstrap-table/bootstrap-table-editable.js"></script>
+<script src="assets/bootstrap-table/bootstrap-editable.js"></script>
+<script src="js/bootstrap-table-zh-CN.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+
+<link rel="stylesheet" type="text/css" href="date/css/pikaday.css"/>
+<script type="text/javascript" src="date/js/pikaday.min.js"></script>
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
+<![endif]-->
+<style>
+.ml10 {
+	margin-left: 10px;
+}
+
+#operate-success {
+
+	font-size: 16px;
+	background-color: #8AC007;
+	color: #FBFBFB;
+	visibility: hidden
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="page-header">
+			<h1>单个商品订单管理&nbsp;&nbsp;</h1>
+		</div>
+		<div id="QRimg"></div>
+		<div style="text-align: center;">
+			<span id="operate-success">设置成功</span>
+		</div>
+		
+				<div id="toolbar" class="btn-group">
+                    <button class="btn btn-default dropdown-toggle " type="button" data-toggle="dropdown">
+                                                                     选择日期<span class="caret"></span>
+                      <ul class="dropdown-menu " role="menu" aria-labelledby="dropdownMenu1" >
+                       <li role="presentation"><a role="menuitem" id="today" tabindex="-1" href="#">今天</a></li>
+                       <li role="presentation"><a role="menuitem" id="week" tabindex="-1" href="#">一周内</a></li>
+                       <li role="presentation"><a role="menuitem" id="month" tabindex="-1" href="#">一月内</a></li>
+                     </ul>
+                   </button>
+				   <button type="button" class="btn btn-default ">
+				      <input type="text" id="datepicker" style="width:90px;padding:0 5px 0 5px" placeholder="开始日期">
+				      <i id="removestart" class="glyphicon glyphicon-remove"></i>
+				   </button>
+				   <button type="button" class="btn btn-default">
+				      <input type="text" id="datepicker2" style="width:90px;padding:0 5px 0 5px" placeholder="结束日期">
+				      <i id="revoveend" class="glyphicon glyphicon-remove"></i>
+				   </button>
+				   <button id="query" type="button" class="btn btn-default">
+						查询
+					</button>	
+					 <button id="back" type="button" class="btn btn-default">
+						<i class="glyphicon glyphicon-arrow-left" title="返回"></i>
+						<span>返回上一页</span>
+					</button>		 
+			</div>
+			
+			<div id="maintable">
+			      <table id="table" data-id-field="foodId" data-striped="true"
+					data-toolbar="#toolbar"
+					data-search="true" data-show-refresh="true" data-show-toggle="true"
+					data-pagination="true" data-show-columns="true" data-height="80%"
+					data-click-to-select="true">
+					<thead>
+						<tr>
+							<th data-align="left" data-field="nickName">昵称</th>									
+					        <th data-align="left" data-field="imgUrl">头像</th>
+							<th data-align="left" data-field="foodId" data-sortable="true">ID</th>
+							<th data-align="left" data-field="name" data-visible="false">名&nbsp;&nbsp;&nbsp;&nbsp;称</th>
+							<th data-align="left" data-field="campusAdmin">商家</th>
+							<th data-align="left" data-field="price" data-sortable="true">价格</th>
+							<th data-align="left" data-field="primeCost" data-sortable="true">成本价</th>
+							<th data-align="left" data-field="amount">数量</th>	
+							<th data-align="left" data-field="consume" data-sortable="true">金额</th>
+							 <th data-align="left" data-field="used" data-formatter="statusConsume" data-sortable="true">消费</th>	
+							<th data-align="left" data-field="createTime2" data-sortable="true">购买时间</th>
+							<th data-align="left" data-field="consumeTime2" data-sortable="true">消费时间</th>
+						</tr>
+					</thead>
+				</table>
+		</div>
+</div>
+</body>
+<script type="text/javascript">
+  
+  var $table = $("#table");
+  
+  $("#table").bootstrapTable({
+		url : "orderService/getOrdersById.do?foodId="+foodId+"&datepicker=null&datepicker2=null"
+	});
+  
+  var picker = new Pikaday(
+		    {
+		        field: document.getElementById('datepicker')
+		    });
+   var picker2 = new Pikaday(
+  		    {
+  		        field: document.getElementById('datepicker2')
+  		    });
+  
+  $("#removestart").on("click",function(){
+  	$("#datepicker").val("");
+  });
+
+  $("#revoveend").on("click",function(){
+  	$("#datepicker2").val("");
+  });
+  
+  
+  
+  $("#query").on("click",function(){
+  	var datepicker=$("#datepicker").val();
+  	var datepicker2=$("#datepicker2").val();
+    var	url="orderService/getOrdersById.do?foodId="+foodId+"&datepicker=null&datepicker2=null";
+      console.log("url="+url);
+  	$(" #table").bootstrapTable('refresh',{
+			url : url
+		});
+
+  });
+  
+  $("#today").on("click",function(){
+  	var Today=new Date();
+  	
+  	var datepicker=Today.getFullYear()+"-"+(Today.getMonth()+1)+"-"+Today.getDate()
+  	
+  	$("#datepicker").val(datepicker);
+  	$("#datepicker2").val(datepicker);
+  	var	url="orderService/getOrdersById.do?foodId="+foodId+"&datepicker=null&datepicker2=null";
+  	$(" #table").bootstrapTable('refresh',{
+			url : url
+		});
+  });
+
+  $("#week").on("click",function(){
+  	var Week=new Date();
+  	
+  	var datepicker=Week.getFullYear()+"-"+(Week.getMonth()+1)+"-"+(Week.getDate()-7);
+  	var datepicker2=Week.getFullYear()+"-"+(Week.getMonth()+1)+"-"+(Week.getDate());
+  	
+  	$("#datepicker").val(datepicker);
+  	$("#datepicker2").val(datepicker2);
+  	var	url="orderService/getOrdersById.do?foodId="+foodId+"&datepicker=null&datepicker2=null";
+  	$(" #table").bootstrapTable('refresh',{
+			url : url
+		});
+  	
+  });
+  
+  $("#month").on("click",function(){
+      var Month=new Date();
+     
+      var datepicker=Month.getFullYear()+"-"+(Month.getMonth())+"-"+(Month.getDate());
+  	var datepicker2=Month.getFullYear()+"-"+(Month.getMonth()+1)+"-"+(Month.getDate());
+  	
+  	$("#datepicker").val(datepicker);
+  	$("#datepicker2").val(datepicker2);
+  	var	url="orderService/getOrdersById.do?foodId="+foodId+"&datepicker=null&datepicker2=null";
+  	$(" #table").bootstrapTable('refresh',{
+			url : url
+		});
+  });
+  
+  
+  function statusConsume(value, row, index) {
+		if (value == "0")
+			return "<span style='color:green'>未消费</span>";
+		else if (value == "1") {
+			return "<span style='color:red'>已消费</span>";
+		}
+	}
+
+  $("#back").on('click',function(){
+	  $('#content').load('pages/fooddetail.html');
+	   $('#content').attr('src','pages/fooddetail.html');
+	   $('#content').attr('foodId',foodId);
+  });	
+</script>
+</html>		

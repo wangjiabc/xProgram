@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>用户管理</title>
+
+<link rel="stylesheet"
+	href="assets/bootstrap-table/bootstrap-table.css">
+<link rel="stylesheet"
+	href="assets/bootstrap-table/bootstrap-editable.css">
+<script src="assets/bootstrap-table/jquery.min.js"></script>
+<script src="assets/bootstrap-table/bootstrap.min.js"></script>
+<script src="assets/bootstrap-table/bootstrap-table.js"></script>
+<script src="assets/bootstrap-table/bootstrap-table-export.js"></script>
+<script src="assets/bootstrap-table/tableExport.js"></script>
+<script src="assets/bootstrap-table/bootstrap-table-editable.js"></script>
+<script src="assets/bootstrap-table/bootstrap-editable.js"></script>
+<script src="js/bootstrap-table-zh-CN.min.js"></script>
+<script type="text/javascript" src="./bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+
+<link rel="stylesheet" type="text/css" href="date/css/pikaday.css"/>
+<script type="text/javascript" src="date/js/pikaday.min.js"></script>
+
+<style>
+.ml10 {
+	margin-left: 10px;
+}
+
+#operate-success {
+
+	font-size: 16px;
+	background-color: #8AC007;
+	color: #FBFBFB;
+	visibility: hidden
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="page-header">
+			<h1>商品详情&nbsp;&nbsp;</h1>
+		</div>
+		<div id="QRimg"></div>
+		<div style="text-align: center;">
+			<span id="operate-success">设置成功</span>
+		</div>
+
+
+
+		<div id="toolbar" class="btn-group">
+					<button id="edit" type="button" class="btn btn-default">
+						<i class="glyphicon glyphicon-edit" title="编辑"></i>
+						<span>编辑</span>
+					</button>
+         		 
+         		 
+         		    <button id="back" type="button" class="btn btn-default">
+						<i class="glyphicon glyphicon-arrow-left" title="返回"></i>
+						<span>返回上一页</span>
+					</button>
+			</div>
+            
+		    <div id="maintable">
+			      <table id="table" data-id-field="foodId" 
+					data-toolbar="#toolbar" data-height="80%"
+					data-click-to-select="true">
+					<thead>
+						<tr>
+							<th data-align="left" data-field="foodId">Id</th>
+							<th data-align="left" data-field="imgUrl" data-formatter="actionImg">商品图片</th>
+							<th data-align="left" data-field="name">名&nbsp;&nbsp;&nbsp;&nbsp;称</th>
+							<th data-align="left" data-field="useTime">使用时间</th>
+							<th data-align="left" data-field="besPoke">预约提醒</th>
+							<th data-align="left" data-field="rule">使用规则</th>
+							<th data-align="left" data-field="cue">温馨提示</th>
+							<th data-align="left" data-field="homeImageManage" data-formatter="ordersDetail">消费详情</th>
+						</tr>
+					</thead>
+				</table>
+		</div>
+	</div>
+	
+<!-- 警告对话框 -->	
+	<div class="modal fade" id="alertdialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header blue">
+                   <div >
+                    	<strong id="alertchar" style="font-size:20px"></strong>
+                   </div>
+        
+                   <div class="modal-footer">
+			           <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			           <button type="button" id="commitFoodDataButton" class="btn btn-primary">确定</button>
+	               </div> 
+              </div>
+         </div>
+       </div>
+   </div>
+ 
+ <!-- 添加商品Modal start -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h3 class="modal-title" id="myModalLabel">编辑商品详情</h3>
+				</div>
+				<form id="dataCommit" class="form-horizontal" method="post"
+					enctype="multipart/form-data" action="service/updateFoods.do">
+					<div class="modal-body">
+						<div class="form-group" >
+							<label class="control-label col-md-4" for="foodId">Id</label>
+							<div class="input-group  col-md-5">
+								<input class="form-control" type="text" id="foodId2" name="foodId" 
+								  readonly="readonly">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-md-4" for="name2">商品名称</label>
+							<div class="input-group  col-md-5">
+								<input class="form-control" type="text" id="name2" name="name"
+									readonly="readonly">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-md-4" for="imgUrl2">图片URL地址</label>
+							<div class="input-group  col-md-5">
+								<input class="form-control" type="text"  id="imgUrl2" name="imgUrl"
+									placeholder="请输入商品图片的链接">
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="control-label col-md-4" for="useTime2">使用时间</label>
+							<div class="input-group  col-md-5">
+								<input class="form-control" type="text" id="useTime2" name="useTime"
+									placeholder="">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-4" for="besPoke2">预约提醒</label>
+							<div class="input-group  col-md-5">
+								<input class="form-control" type="text"  id="besPoke2" name="besPoke"
+									placeholder="">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-4" for="rule">使用规则</label>
+							<div class="input-group col-md-5">
+								<input  class="form-control" type="text" id="rule2" name="rule"
+									placeholder="">
+							</div>
+						</div>	
+
+ 			            <div class="form-group">
+							<label class="control-label col-md-4" for="cue">温馨提示</label>
+							<div class="input-group col-md-5">
+								<input  class="form-control" type="text" id="cue2" name="cue"
+									placeholder="">
+							</div>
+						</div>	
+ 			
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button"
+							class="btn btn-primary" onclick="commitFoodDataButton();">提交更改</button>
+					</div>
+
+					<input type="file" name="myfile" style="display:none">
+                    <input input class="form-control" type="text" id="foodId2" name="foodId" style="display:none">
+				</form>
+				<script type="text/javascript">
+			
+				    
+				function commitFoodDataButton(){
+				    //对表单的数据进行验证
+				    var foodId=$("#foodId2").val();
+				    var imgUrl=$("#imgUrl2").val();
+				    var useTime=$("#useTime2").val();
+				    var besPoke=$("#besPoke2").val();
+				    var rule=$("#rule2").val();
+				    var cue=$("#cue2").val();
+              
+				    $.post("service/insertFoodDetail.do",{
+                        foodId:foodId,
+                        imgUrl:imgUrl,
+				    	useTime:useTime,
+				        besPoke:besPoke,
+				        rule:rule,
+				        cue:cue
+				    },function(text){
+				    	if(text==-1||text==0){
+				    		$("#myModal").modal('hide');
+				    		setSuccess("失败。");
+				    	}else{	
+				    		$.post("templet/getPurchaseTemplet.do",{      //重新生成模板
+					    	       foodId:foodId
+					          },function(text){
+					        	  var json = eval('(' + text + ')');
+									if (json.status == "success") {
+										setSuccess("更新成功。");
+										
+							    		$(" #table").bootstrapTable('refresh',{
+							    			url : "service/getFoodDetail.do?foodId2="+foodId
+										});
+							    		
+										
+									}else{
+										setSuccess(json.message);
+									}
+					         });
+				    		
+				    		$("#myModal").modal('hide');
+				    		
+				    	}
+				    });
+				    
+		    		
+				    
+				}
+								
+				</script>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+	</div>
+   
+ <script type="text/javascript">
+  function actionImg(value, row, index) {
+		return ['<div class="detail-image">',
+				'&nbsp;<img src="'+value+'" height="33px">&nbsp;',
+				'</div>'].join('');
+	}
+ 
+   function getQueryString(name) {
+	    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	    var r = window.location.search.substr(1).match(reg);
+	    if (r != null) return unescape(r[2]); return null;
+	    }
+ 
+   var foodId=$('#content').attr('foodId');
+
+        
+	$("#table").bootstrapTable({
+		url : "service/getFoodDetail.do?foodId2="+foodId
+	 });
+	
+	$('#edit').on('click',function() {
+	
+		 /*
+		  *bootstrapTable默认取得全部表格数据
+		  */
+		    var array = $('#table').bootstrapTable('getData');
+		
+			$("#myModalLabel").text("编辑商品");
+			$("#myModal").modal('show');
+    
+			$("#foodId2").val(array[0].foodId);
+			$("#foodId2").attr('readonly',true);
+			$("#name2").val(array[0].name);
+			$("#imgUrl2").val(array[0].imgUrl);
+			$("#useTime2").val(array[0].useTime);
+			$("#besPoke2").val(array[0].besPoke);
+			$("#rule2").val(array[0].rule);
+			$("#cue2").val(array[0].cue);
+    
+	  });
+ 
+		
+	$("#back").on('click',function(){
+			$('#content').load('pages/food.html');
+	        $('#content').attr('src','pages/food.html');
+	});			
+	
+	$("#templet").on('click',function(){
+		$.post("templet/getPurchaseTemplet.do",{      //重新生成模板
+ 	       foodId:foodId
+         },function(text){
+        	
+        	 var json = eval('(' + text + ')');
+				if (json.status == "success") {
+					setSuccess("更新成功。");
+					
+			       	 $(" #table").bootstrapTable('refresh',{
+			    			url : "service/getFoodDetail.do?foodId2="+foodId
+						});
+					
+				}else{
+					setSuccess(json.message);
+				}
+        	 
+        });
+    });			
+	
+  function ordersDetail(value, row, index) {
+		return [
+				'<a  href="javascript:void(0)" onclick="detail(this);" title="点击查看订单详情">',
+				'&nbsp;<img src="img/detail.jpg" width="25px" height="25px">&nbsp;',
+				'</a>'].join('');
+  }
+
+  function detail(temp){
+		var hang = $(temp.parentNode).parent().prevAll().length+1;  //jquery获取td所在的行和列
+		   //var lie = $(temp.parentNode).prevAll().length+1;  
+		   //alert("第"+hang+"行"+"	"+"第"+lie+"列"); 
+
+			 var val=document.getElementById("table").rows[hang].cells[1]; //取得所在列的值
+		     var foodId=val.innerHTML; 
+
+			 
+			   $('#content').load('pages/ordersDetail.html');
+			   $('#content').attr('src','pages/fooddetail.html');
+			   $('#content').attr('foodId',foodId);
+	}
+ </script>

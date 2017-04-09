@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xProgram.manage.mapper.CampusMapper">
+	<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" />
+   <resultMap id="BaseResultMap" type="com.xProgram.manage.model.Campus">
+        <id column="campus_admin" property="campusAdmin" jdbcType="VARCHAR" />
+		<id column="campus_id" property="campusId" jdbcType="INTEGER" />
+		<result column="telephone" property="telePhone" jdbcType="INTEGER" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="last_login_date" property="loginTime" jdbcType="TIMESTAMP" />
+		<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
+		<result column="city_id" property="cityId" jdbcType="INTEGER" />
+		<result column="custom_service" property="customService"
+			jdbcType="VARCHAR" />
+		<!--<result column="location_x" property="locationX" jdbcType="DOUBLE" 
+			/> <result column="location_y" property="locationY" jdbcType="DOUBLE" /> -->
+	</resultMap>
+   
+   
+    <select id="selectAllCampus" resultMap="BaseResultMap">
+		select campus_id,campus_name,campus.city_id,
+		custom_service
+		 from 
+		 campus where campus.city_id=#{cityId,jdbcType=INTEGER}
+	</select>
+   
+   <select id="selectAllFullCampus" resultMap="BaseResultMap">
+		select campus_id,campus_name,campus.city_id,
+		custom_service
+		 from 
+		 campus
+	</select>
+   
+   <!-- 查找全部商家信息 -->
+   <select id="getAllCampusAdmin" resultMap="BaseResultMap">
+		select campus_admin,type,
+		 telephone,
+		 address,last_login_date
+		 from 
+		 campus_admin 
+		 <where>
+		 <if test="campusAdmin0!=null">      <!-- 自己的信息 -->
+		   and campus_admin=#{campusAdmin0,jdbcType=VARCHAR} or
+		  </if>
+		  type=#{type,jdbcType=INTEGER}
+		  <if test="campusAdmin!=null">
+		   and campus_admin=#{campusAdmin,jdbcType=VARCHAR}
+		  </if>
+		 </where>
+	</select>
+   
+   <select id="selectCampusById" resultMap="BaseResultMap">
+		select * from campus
+		where campus_id=#{campusId,jdbcType=INTEGER}
+	</select>
+   
+   <select id="getIdByName" resultType="java.lang.Integer">
+		select
+		campus_id
+		from campus
+		where campus_name=#{campusName,jdbcType=VARCHAR}
+		limit 1
+	</select>
+   
+</mapper>

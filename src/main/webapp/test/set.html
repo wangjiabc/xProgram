@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="../js/jquery.js"></script>
+<title>message</title>
+</head>
+<body>
+  <h1>已经发送消息了</h1>
+  <div id="i"></div>
+  <div id="mssage"></div>
+  <div id="mssage2"></div>
+  <div id="mssage3"></div>
+  <script type="text/javascript">
+  var i=0;
+  setTimeout(function(){
+
+  $('#i').html(i);
+  $.get("/xProgram/test/set.do",
+		  {userid:"t2",value:i},
+			function(data){
+            $('#mssage').html(data);
+	});
+  $.get("/xProgram/test/set.do",
+		  {userid:"t3",value:i},
+			function(data){
+            $('#mssage2').html(data);
+	});
+  $.get("/xProgram/test/set.do",
+		  {userid:"t4",value:i},
+			function(data){
+            $('#mssage3').html(data);
+	});
+  i++;
+  if(i<100)
+   setTimeout(arguments.callee,50);
+  },50);
+  </script>
+</body>
+</html>

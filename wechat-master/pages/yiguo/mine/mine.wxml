@@ -1,0 +1,18 @@
+<view class="mine-box">
+    <import src="/template/signin.wxml"/>
+
+    <view class="user">
+        <view class="user-pic"><image src="{{userInfo.avatarUrl}}"></image></view>
+        <view class="user-name">{{userInfo.nickName}}</view>
+    </view>
+
+    <view class="btn">
+        <ul>
+        <block wx:for="{{mine_list}}" wx:for-item="mine" wx:key="index" >
+            <li><image src="{{mine.pic_url}}" data-id="{{index}}" bindtap="menueDetail"></image><span>{{mine.title}}</span></li>
+        </block>
+        </ul>
+    </view>
+
+
+</view>

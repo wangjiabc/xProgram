@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="../js/jquery.js"></script>
+<title>message</title>
+</head>
+<body>
+  <div id="i"></div>
+  <div><span>commit total=</span><span id="commit" value="0"></span></div>
+  <div><span>rollback total=</span><span id="rollback" value="0"></span></div>
+  <script type="text/javascript">
+  var i=0;
+  setTimeout(function(){
+
+  $('#i').html(i);
+  
+  
+ 
+  
+  $.get("/xProgram/test/affair1.do",
+	  function(data){
+	        
+	     if(data==1){
+	    	 var total=document.getElementById("commit").attributes["value"];
+	    	  var c=parseInt(total["value"]);
+              console.log("C="+c);
+	    	  c++;
+	    	  document.getElementById("commit").setAttribute("value",i);
+             $('#commit').text(c);
+	        }else{
+	        	 var total2=document.getElementById("rollback").attributes["value"];
+	        	  var r=parseInt(total2["value"]);
+	        	  console.log("data="+data);
+	        	r++;
+	        	document.getElementById("rollback").setAttribute("value",r);
+	        	$('#rollback').text(r);
+	        }
+	     
+	     
+	});
+  
+  $.get("/xProgram/test/affair2.do",
+		  function(data){
+		        
+		     if(data==1){
+		    	 var total=document.getElementById("commit").attributes["value"];
+		    	  var c=parseInt(total["value"]);
+	              console.log("C="+c);
+		    	  c++;
+		    	  document.getElementById("commit").setAttribute("value",i);
+	             $('#commit').text(c);
+		        }else{
+		        	 var total2=document.getElementById("rollback").attributes["value"];
+		        	  var r=parseInt(total2["value"]);
+		        	  console.log("data="+data);
+		        	r++;
+		        	document.getElementById("rollback").setAttribute("value",r);
+		        	$('#rollback').text(r);
+		        }
+		     
+		     
+		});
+  
+  i++;
+  if(i<100)
+   setTimeout(arguments.callee,50);
+  },50);
+  </script>
+</body>
+</html>
+</body>
+</html>

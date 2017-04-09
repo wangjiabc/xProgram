@@ -1,0 +1,62 @@
+.address .weui-media-box {
+	padding-left: 35px;
+	padding-right: 35px;
+}
+
+.address .addr {
+	position: absolute;
+	top: 50%;
+	left: 10px;
+	width: 20px; 
+    height: 20px;
+    -webkit-transform: translate3d(0, -50%, 0);
+    transform: translate3d(0, -50%, 0);
+}
+
+.address .addr .icon {
+    width: 20px; 
+    height: 20px;
+}
+
+.address .weui-cell__ft {
+	position: absolute;
+	top: 50%;
+	right: 13px;
+	width: 20px; 
+    height: 20px;
+    -webkit-transform: translate3d(0, -50%, 0);
+    transform: translate3d(0, -50%, 0);
+}
+.user{
+  height: 500rpx;
+  width: 100%;
+}
+.user-pic{
+  height: 400rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.user-name{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.user-text{
+  display: flex;
+  height: 100rpx;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: #008842;
+}
+.user-text text{
+  display: flex;
+  justify-content: center;
+  width: 300rpx;
+}
+.user image{
+  height: 260rpx;
+  width: 260rpx;
+  border-radius: 130rpx;
+}

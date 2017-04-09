@@ -1,0 +1,65 @@
+<view class="list-tab">
+    <ul>
+        <li class="{{current == 0 ? 'active' : ''}}" catchtap="switchSlider" data-index="0" id="all">全部</li>
+        <li class="{{current == 1 ? 'active' : ''}}" catchtap="switchSlider" data-index="1" id="submitted">已提交</li>
+        <li class="{{current == 2 ? 'active' : ''}}" catchtap="switchSlider" data-index="2" id="confirmed">已确认</li>
+        <li class="{{current == 3 ? 'active' : ''}}" catchtap="switchSlider" data-index="3" id="finished">已完成</li>
+        <li class="{{current == 4 ? 'active' : ''}}" catchtap="switchSlider" data-index="4" id="canceled">已取消</li>
+    </ul>
+</view>
+
+<swiper class="swiper-box"  current="{{current}}" indicator-dots="{{swiper.indicatorDots}}" autoplay="{{swiper.autoplay}}" interval="{{swiper.interval}}" duration="{{swiper.duration}}" bindchange="changeSlider">
+ <block>
+  <!-- 1 -->
+<swiper-item> 
+ <scroll-view class="scroll-list" scroll-y="true" style="height: 100%" bindscrolltolower="lower">
+    <view class="weui-form-preview"  wx:for="{{ items }}" wx:for-item="item" wx:key="index" bindtap="navigateTo" data-id="{{ item._id }}">
+        <view class="weui-form-preview__hd">
+            
+        </view>
+        <view class="weui-form-preview__bd">
+                <view class="weui-form-preview__label">{{ item.name }}</view>
+                <view class="weui-form-preview__value">¥ {{ item.price }}x{{item.amount}} </view>
+        </view>
+        <view class="weui-form-preview__item">
+                <view class="weui-form-preview__label">订单总价
+                ¥ {{ item.amount*item.price }}</view>
+            </view>
+        <view class="weui-form-preview__ft">
+            <navigator class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active">联系商家</navigator>
+            <navigator class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">再来一单</navigator>
+        </view>
+    </view>
+
+    <template is="prompt" data="{{ prompt }}"/>
+  </scroll-view>
+ </swiper-item>
+
+
+ <!-- 2 -->
+<swiper-item> 
+ <scroll-view class="scroll-list" scroll-y="true" style="height: 100%" bindscrolltolower="lower">
+    <view class="weui-form-preview"  wx:for="{{ items }}" wx:for-item="item" wx:key="index" bindtap="navigateTo" data-id="{{ item._id }}">
+        <view class="weui-form-preview__hd">
+            
+        </view>
+        <view class="weui-form-preview__bd">
+                <view class="weui-form-preview__label">{{ item.name }}</view>
+                <view class="weui-form-preview__value">¥ {{ item.total }}x{{item.totalAmount}} </view>
+        </view>
+        <view class="weui-form-preview__item">
+                <view class="weui-form-preview__label">订单总价
+                ¥ {{ item.totalAmount*item.total }}</view>
+            </view>
+        <view class="weui-form-preview__ft">
+            <navigator class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active">联系商家</navigator>
+            <navigator class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">再来一单</navigator>
+        </view>
+    </view>
+
+    <template is="prompt" data="{{ prompt }}"/>
+  </scroll-view>
+ </swiper-item>
+
+</block>
+</swiper>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <title>登录管理平台</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="assets/css/reset.css">
+        <link rel="stylesheet" href="assets/css/style.css">
+
+    </head>
+
+    <body>
+
+        <div class="page-container">
+            <h1>登录</h1>
+            <form action="" method="post">
+                <input type="text" name="username" class="username" id="phone" placeholder="用户名">
+                <input type="password" name="password" class="password" id="password" placeholder="密码">
+                <button type="button" onclick="toLogin();">确定</button>
+                <div class="error"><span>+</span></div>
+            </form>
+           <div class="connect">
+                <p id="message" style="color:red"></p>
+            </div>
+        </div>
+		
+        <!-- Javascript -->
+        <script src="../../js/jquery.min.js"></script>
+    
+
+    </body>
+<script type="text/javascript">
+ function toLogin(){
+	var phone=document.getElementById("phone").value;
+	var password=document.getElementById("password").value;
+	
+	if ((phone==null||phone=="")||(password==null||password=="")) {
+		$("#message").html("账号或者密码为空，请检查后输入");
+		return;
+	};
+	
+	$.post("../../../xProgram/seller/toLogin.do",
+		{campusAdmin:phone,password:password},
+		function(text){
+			var json=eval('('+text+')');
+			if (json.status=="success") {
+						//将用户名和密码存到cookie
+							document.cookie = "campusAdmin="+phone;
+							//将当前管理员管理的校区id存到cookie
+							//getSellerById获取校区管理员信息
+							$.post("../../../xProgram/seller/getSellerById.do",{
+								campusAdmin : phone
+								
+							},function(data){
+								
+								console.log('phone='+phone);
+								
+								//alert(data.seller.type);
+								document.cookie = "cityId="+data.seller.cityId;
+								
+								if(data.sellercampus!=null){
+							       document.cookie="campusId="+data.sellercampus.campusId;
+								 }
+							    
+								document.cookie = "type="+data.seller.type;
+								console.log(document.cookie);
+									//跳转到主页
+									location.href="index.html?backurl="+window.location.href;
+
+								
+							},"json");
+
+				}else{
+                    $("#message").html("对不起，你没有登陆权限！");
+				}
+
+		});
+   }
+
+   $("#phone").focus(function(){
+		$("#message").html("");
+	});
+
+	$("#password").focus(function(){
+		$("#message").html("");
+	});
+ 
+</script>
+</html>

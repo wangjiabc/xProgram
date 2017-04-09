@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Insert title here</title>
+</head>
+<body>
+<span>jsCode: </span><input type="text" id="jsCode" />
+<br />
+<button id="go">GO</button>
+<div id="aaa"></div>
+</body>
+<script type='text/javascript' src="../js/jquery.js"></script>
+<script type="text/javascript">
+var jsCode,iv,encryptedData;
+
+$("#go").click(function(){
+	jsCode=$("#jsCode").val();
+	$.post('/xProgram/insweptUser/getKey.do', {
+		jsCode : jsCode,
+		
+	},function(data){		
+
+		
+		$("#aaa").html(data);
+	});
+	
+  });
+</script>        
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+</body>
+<button id="go">GO</button>
+<div id="aaa"></div>
+</body>
+<script type='text/javascript' src="../js/jquery.js"></script>
+<script type="text/javascript">
+var jsCode,iv,encryptedData;
+
+$("#go").click(function(){
+	jsCode=$("#jsCode").val();
+	$.post('/xProgram/insweptMine/aaa.do', {
+		
+	},function(data){
+     if(data==0){
+    	 alert("not login");
+     }else{
+		$("#aaa").html(data);
+     }
+	});
+	
+  });
+</script>       
+</html>

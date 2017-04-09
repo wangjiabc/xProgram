@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" user-scalable=0 charset='utf-8'>
+<title>订单管理</title>
+
+<script type="text/javascript">
+	if(typeof(EventSource) !== "undefined") {
+		 var evtSource = new EventSource("/xProgram/sse");
+         var alertdialog=document.getElementById("alertdialog");
+         var alertchar=document.getElementById("alertchar");
+		 evtSource.addEventListener("ping", function(e){
+			var obj = JSON.parse(e.data);
+			$("#mask").attr("style","display:none");
+			 $("#weui_actionsheet").removeClass("weui_actionsheet_toggle");
+			 $("#dialog1").attr("style","display:block");
+			 $("#affirmBody").html(
+					 "<img src='"+obj.imgUrl+"' width='44px' height='44px' style='border-radius:50%;'>"+
+					 "<br />昵称 : "+obj.nickName+
+					 "<br />订单号 : "+obj.id+
+					 "<br />商品号 : "+obj.foodId+
+					 "<br />商品名称 : "+obj.campusName+
+					 "<br />商品数量 : "+obj.amount+
+					 "<br />所属商家 : "+obj.campusAdmin
+					 );
+		     
+		     if(obj.j>50){
+		    	 $("#dialog1").attr("style","display:none");
+		     }
+		     
+		     $(".primary").on("click",function(){
+			 		$.ajax({
+						url: "/xProgram/consumemanage/commit.do",
+						type: "post",
+						data:{campusAdmin:obj.campusAdmin,campusId:obj.campusId,
+	                          openId:obj.openId,id:obj.id},
+						dataType:'json',
+						success:function(data){
+							$("#dialog1").attr("style","display:none");
+							if(data==1){							
+								$('#toast').show();
+								foodId=getQueryString("foodId");
+								campusId = getCookie("campusId");
+								$("#table").bootstrapTable('refresh',{
+									url : "../../mobileOrderService/getOrdersById.do?campusId="+campusId+"&foodId="+foodId+"&datepicker=null&datepicker2=null"
+								}); 
+							     setTimeout(function () {
+							         $('#toast').hide();
+							     }, 2000);
+							  }else{
+								alert("确认失败");
+							 }
+						}
+					});
+				});
+				
+			     
+			  $(".default").on("click",function(){
+			     $.post("/xProgram/consumemanage/cancel.do", {
+			            campusAdmin:obj.campusAdmin,
+			            keyCode:obj.keyCode
+			     }, function(data) {
+			    		$("#dialog1").attr("style","display:none");
+			    	});
+			    });
+		     
+		    console.log(obj.campusAdmin+"  "+e.data);
+		  }, false);
+
+		  evtSource.addEventListener("open", function(e) {
+		    // Connection was opened.
+			 console.log("sse open");
+		  }, false);
+
+		  evtSource.addEventListener("error", function(e) {
+		  }, false);
+		  
+		  evtSource.addEventListener("close", function(e) {
+		      
+			  }, false);
+		  
+		} else {
+			 alert("您的浏览器不支持的EventSource,请更换浏览器");
+	}
+	
+</script>
+ 
+
+<link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/bootstrap-table/bootstrap-table.css">
+<link rel="stylesheet" href="../../assets/bootstrap-table/bootstrap-editable.css">
+<script src="../../assets/bootstrap-table/jquery.min.js"></script>
+<script src="../../assets/bootstrap-table/bootstrap.min.js"></script>
+<script src="../../assets/bootstrap-table/bootstrap-table.js"></script>
+<script src="../../assets/bootstrap-table/bootstrap-table-export.js"></script>
+<script src="../../assets/bootstrap-table/tableExport.js"></script>
+<script src="../../assets/bootstrap-table/bootstrap-table-editable.js"></script>
+<script src="../../assets/bootstrap-table/bootstrap-editable.js"></script>
+<script src="../../js/bootstrap-table-zh-CN.min.js"></script>
+
+<script type='text/javascript' src="../../js/bootstrap.min.js"></script>
+<script type='text/javascript' src="../../js/main.js"></script>
+<script type="text/javascript" src="../../js/util.js"></script>
+
+<link rel="stylesheet" href="../../weixinUI/style/weui.css"/>
+
+</head>
+
+<body>
+<!--BEGIN dialog1-->
+ <div class="weui_dialog_confirm" id="dialog1" style="display: none;">
+    <div class="weui_mask"></div>
+    <div class="weui_dialog">
+        <div class="weui_dialog_hd"><strong class="weui_dialog_title"></strong></div>
+        <div class="weui_dialog_bd" id="affirmBody"></div>
+        <div class="weui_dialog_ft">
+            <a href="javascript:;" class="weui_btn_dialog default">取消</a>
+            <a href="javascript:;" class="weui_btn_dialog primary">确定</a>
+        </div>
+    </div>
+ </div>
+
+ <div id="toast" style="display: none;">
+    <div class="weui_mask_transparent"></div>
+    <div class="weui_toast">
+        <i class="weui_icon_toast"></i>
+        <p class="weui_toast_content">确认成功</p>
+    </div>
+ </div>
+
+ <div class="weui_msg" id="msgSuccess" style="display: none;">
+    <div class="weui_icon_area"><i class="weui_icon_success weui_icon_msg"></i></div>
+    <div class="weui_text_area">
+        <h2 class="weui_msg_title"></h2>
+        <p class="weui_msg_desc"></p>
+    </div>
+    <div class="weui_opr_area">
+        <p class="weui_btn_area">
+            <a href="javascript:;" class="weui_btn weui_btn_primary">确定</a> 
+        </p>
+    </div>
+ </div>
+
+ <div class="weui_msg" id="msgWarn" style="display: none;">
+    <div class="weui_icon_area"><i class="weui_icon_warn weui_icon_msg"></i></div>
+    <div class="weui_text_area">
+        <h2 class="weui_msg_title"></h2>
+        <p class="weui_msg_desc"></p>
+    </div>
+    <div class="weui_opr_area">
+        <p class="weui_btn_area">
+            <a href="javascript:;" class="weui_btn weui_btn_primary">确定</a> 
+        </p>
+    </div>
+ </div>
+
+ <div id="loadingToast" class="weui_loading_toast" style="display:none;">
+    <div class="weui_mask_transparent"></div>
+    <div class="weui_toast">
+        <div class="weui_loading">
+            <div class="weui_loading_leaf weui_loading_leaf_0"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_1"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_2"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_3"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_4"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_5"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_6"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_7"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_8"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_9"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_10"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_11"></div>
+        </div>
+        <p class="weui_toast_content">数据加载中</p>
+    </div>
+  </div>
+
+<div id="actionSheet_wrap">
+    <div class="weui_mask_transition" id="mask" style="display: none;"></div>
+    <div class="weui_actionsheet" id="weui_actionsheet">
+        <div class="weui_actionsheet_menu">
+            <div class="weui_actionsheet_cell"></div>
+        </div>
+        <div class="weui_actionsheet_action">
+            <div class="weui_actionsheet_cell" id="actionsheet_cancel">取消</div>
+        </div>
+    </div>
+</div>
+ 
+	
+ <div class="mainElement">
+  <div class="navbar-inner" style="height:35px;background-color:#44b549;"> </div>
+ </div>
+			
+			<div id="maintable">
+			      <table id="table" data-id-field="foodId" data-striped="true"
+					data-toolbar="#toolbar"
+					 data-show-toggle="true"
+					data-pagination="true" data-show-columns="true" data-height="80%"
+					data-click-to-select="true">
+					<thead>
+						<tr>
+							<th data-align="left" data-field="nickName">昵称</th>									
+					        <th data-align="left" data-field="imgUrl">头像</th>
+							<th data-align="left" data-field="foodId">ID</th>
+							<th data-align="left" data-field="name" data-visible="false">名&nbsp;&nbsp;&nbsp;&nbsp;称</th>
+							<th data-align="left" data-field="campusAdmin" data-visible="false">商家</th>
+							<th data-align="left" data-field="price" data-visible="false">价格</th>
+							<th data-align="left" data-field="primeCost" data-visible="false">成本价</th>
+							<th data-align="left" data-field="amount">数量</th>	
+							<th data-align="left" data-field="consume">金额</th>
+							 <th data-align="left" data-field="used" data-formatter="statusConsume">消费</th>	
+							<th data-align="left" data-field="createTime2" data-visible="false">购买时间</th>
+							<th data-align="left" data-field="consumeTime2" data-visible="false">消费时间</th>
+						</tr>
+					</thead>
+				</table>
+		</div>
+</div>
+
+<style type="text/css">  <!--避免bootstrap框架窗口变化造成元素高度的变化 -->
+.navbar-inner{
+
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cc0956ae', endColorstr='#d9024a9e',GradientType=0 ); /* IE6-9 */
+}
+
+#brand{
+ color:#000;
+ font-size:16px;
+ padding: 5px 0 0 0 ;
+}
+
+.pull-left{
+   padding: 5px 0 0 0 ;
+}
+
+.change{
+  color:red;
+}
+
+ .result-icon{
+ position: relative;
+  top:2px;
+  display: inline-block;
+
+   width:26px;
+   height:15px;
+  }
+ .result-fail{
+  background-image:url('../../img/weixin.png') ;
+  background-repeat:no-repeat;
+  -moz-background-size: 25px 18px;
+    -webkit-background-size: 25px 18px;
+    -o-background-size: 25px 18px;
+    background-size: 25px 18px;
+}
+
+.icon-white{
+ position: relative;
+  display: inline-block;
+  margin:3px 0 0 10px;
+   width:30px;
+   height:30px;
+  }
+
+.icon-off{
+  background-image:url('../../img/out.jpg') ;
+  background-repeat:no-repeat;
+  -moz-background-size: 20px 20px;
+    -webkit-background-size: 20px 20px;
+    -o-background-size: 20px 20px;
+    background-size: 20px 20px;
+}
+
+.qrimgUlr img{ width: 20px; height: 20px; vertical-align: middle;}
+
+</style>
+
+</body>
+<script type="text/javascript">
+function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+    }
+  
+  var $table = $("#table");
+  
+  var foodId=getQueryString("foodId");
+  
+  var campusId = getCookie("campusId");
+
+if(getCookie("type")==0)
+	 $('#brand').text(getCookie("campusAdmin")+" (管理员)");
+	else
+	  $('#brand').text(getCookie("campusAdmin")+" (普通商户)");
+
+//定义全局变量
+var adminType = getCookie("type");		//当前登录账号类型（总管理员、校区管理员）
+console.log('admintype='+adminType);
+var campusId = getCookie("campusId");	
+var status = getCookie("status");		//校区状态
+console.log(document.cookie);
+
+	if(campusId!=null&&typeof(campusId)!="undefined"){
+		$.post('/xProgram/campus/getCampusById.do', {
+			campusId : getCookie("campusId")
+		},function(data){		
+		   $("#dropdownMenu2").html('<i class="result-icon result-fail"></i>'+
+				   data.campus.campusName+'<span class="caret"></span>');	
+		},"json");
+	}
+
+
+$("#dropdown-campus").empty();//移除子元素
+$.getJSON("/xProgram/campus/getAllCampus.do", 
+ function(data){
+	//alert(data.campus[0].campusName);
+	for(var i=0; i < data.length; i++){
+		$("#dropdown-campus").append("<li role='presentation'><a class='campus-item' role='menuitem' tabindex='-1' href='#'>"+data[i].campusName+"</a></li>");
+	}
+	$(".campus-item").on("click", function(event){
+		//alert($(this).text());
+		var campusName = $(this).text();
+		
+		$.getJSON("../../campus/getIdByName.do?campusName="+campusName,function(data){
+			console.log(data.campusId);
+			document.cookie="campusId="+data.campusId;
+			//$.cookie('campusId',data.campusId);
+			$.post('/xProgram/campus/getCampusById.do',{
+				campusId : data.campusId
+			},function(data){	
+					if(i>1){
+						$("#dropdownMenu2").html(
+								'<i class="result-icon result-fail"></i>'+
+								data.campus.campusName+'<span class="caret"></span>');
+					}else{
+						$("#dropdownMenu2").html(
+								'<i class="result-icon result-fail"></i>'+
+								data.campus.campusName);
+					}
+			},"json");
+			
+			 campusId = getCookie("campusId");
+			
+			  $(" #table").bootstrapTable('refresh',{
+				  url : "../../mobileOrderService/getAllOrders.do?campusId="+campusId+"&datepicker=null&datepicker2=null"
+				});				
+			
+		});
+		
+	});
+});
+
+  
+  $("#table").bootstrapTable({
+		url : "../../mobileOrderService/getOrdersById.do?campusId="+campusId+"&foodId="+foodId+"&datepicker=null&datepicker2=null"
+	});  
+  
+  
+  function statusConsume(value, row, index) {
+		if (value == "0")
+			return "<span style='color:green'>未消费</span>";
+		else if (value == "1") {
+			return "<span style='color:red'>已消费</span>";
+		}
+	}
+
+  $("#QRCode").on("click",function(){
+	   campusId = getCookie("campusId");
+   	$.post("../../mobileQrCode/getUrl.do",{
+   		campusId:campusId
+   	  },function(data){
+   		  var obj=JSON.parse(data);
+   		 var QRimg="<img style='width: 100%; height: 100%;' src='../../"+obj.url+"'>";
+   		 $(".weui_actionsheet_menu .weui_actionsheet_cell").html(QRimg);
+                var mask = $('#mask');
+                var weuiActionsheet = $('#weui_actionsheet');
+                weuiActionsheet.addClass('weui_actionsheet_toggle');
+                mask.show()
+                    .focus()//加focus是为了触发一次页面的重排(reflow or layout thrashing),使mask的transition动画得以正常触发
+                    .addClass('weui_fade_toggle').one('click', function () {
+                    hideActionSheet(weuiActionsheet, mask);
+                });
+                $('#actionsheet_cancel').one('click', function () {
+                    hideActionSheet(weuiActionsheet, mask);
+                });
+                mask.unbind('transitionend').unbind('webkitTransitionEnd');
+
+                function hideActionSheet(weuiActionsheet, mask) {
+                    weuiActionsheet.removeClass('weui_actionsheet_toggle');
+                    mask.removeClass('weui_fade_toggle');
+                    mask.on('transitionend', function () {
+                        mask.hide();
+                    }).on('webkitTransitionEnd', function () {
+                        mask.hide();
+                    })
+                }
+       
+   	  });
+});
+  
+</script>
+</html>		

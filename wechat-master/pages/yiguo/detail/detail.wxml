@@ -1,0 +1,32 @@
+<view class="detail-box">
+  <view class="weui-media-box weui-media-box_text" wx:for="{{detailgood}}"  wx:for-item="detailgood" wx:key="index">
+    <view class="detail-list">
+        <view><image src="{{detailgood.pic_url}}"></image></view>
+        <view class="detail-name">
+            <ul>
+                <li>商品名称 {{detailgood.name}}</li>
+                <li>价格 {{detailgood.price}}</li>
+                <li>规格 {{detailgood.type}}</li>
+                <li>信息 产地：泰国 发货地: 结单时间：20:00</li>
+                <li>用户评价 </li>
+            </ul>
+        </view>
+    </view>
+ </view>
+    
+ <view class="btn-plus" bindtap="addCart">
+  <view class="section">
+   <view class="flex-wrp" style="flex-direction:row;">
+    <view class="scroll-view-item_H add">
+        <image class="icon" src="/images/icons/iconfont-plus-circle.png" />
+        <text class="addcart">加入购物车</text>
+    </view>
+    <view class="scroll-view-item_H buy">
+        <text>立即购买</text>
+    </view>
+   </view>
+  </view>
+</view>
+
+</view>
+

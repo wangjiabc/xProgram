@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>WeUI</title>
+    <link rel="stylesheet" href="style/weui.css"/>
+    <link rel="stylesheet" href="example.css"/>
+</head>
+<body>
+<div class="bd spacing">
+    <a href="javascript:;" class="weui_btn weui_btn_primary" id="showDialog1">点击弹出Dialog样式一</a>
+    <a href="javascript:;" class="weui_btn weui_btn_primary" id="showDialog2">点击弹出Dialog样式二</a>
+</div>
+<!--BEGIN dialog1-->
+<div class="weui_dialog_confirm" id="dialog1" style="display: none;">
+    <div class="weui_mask"></div>
+    <div class="weui_dialog">
+        <div class="weui_dialog_hd"><strong class="weui_dialog_title">弹窗标题</strong></div>
+        <div class="weui_dialog_bd">自定义弹窗内容，居左对齐显示，告知需要确认的信息等</div>
+        <div class="weui_dialog_ft">
+            <a href="javascript:;" class="weui_btn_dialog default">取消</a>
+            <a href="javascript:;" class="weui_btn_dialog primary">确定</a>
+        </div>
+    </div>
+</div>
+
+<div class="actionsheet">
+<div class="hd">
+    <h1 class="page_title">ActionSheet</h1>
+</div>
+<div class="bd spacing">
+    <a href="javascript:;" class="weui_btn weui_btn_primary" id="showActionSheet">点击上拉ActionSheet</a>
+</div>
+<!--BEGIN actionSheet-->
+<div id="actionSheet_wrap">
+    <div class="weui_mask_transition" id="mask" style="display: none;"></div>
+    <div class="weui_actionsheet" id="weui_actionsheet">
+        <div class="weui_actionsheet_menu">
+            <div class="weui_actionsheet_cell"><img src="file:///C:/Users/WangJing/Desktop/logo - 副本.gif"></div>
+        </div>
+        <div class="weui_actionsheet_action">
+            <div class="weui_actionsheet_cell" id="actionsheet_cancel">取消</div>
+        </div>
+    </div>
+</div>
+<!--END actionSheet-->
+</div>
+
+
+<div class="weui_tabbar">
+        <a href="javascript:;" class="weui_tabbar_item weui_bar_item_on">
+            <div class="weui_tabbar_icon">
+                <img src="./images/icon_nav_button.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">商品</p>
+        </a>
+        <a href="javascript:;" class="weui_tabbar_item">
+            <div class="weui_tabbar_icon">
+                <img src="./images/icon_nav_msg.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">全部订单</p>
+        </a>
+        <a href="javascript:;" class="weui_tabbar_item">
+            <div class="weui_tabbar_icon">
+                <img src="./images/icon_nav_article.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">二维码</p>
+        </a>
+        <a href="javascript:;" class="weui_tabbar_item">
+            <div class="weui_tabbar_icon">
+                <img src="./images/icon_nav_cell.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">退出</p>
+        </a>
+    </div>
+
+</body>
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript">
+ $("#showDialog1").click(function(){
+	 $("#dialog1").attr("style","display:block");
+ });
+ 
+ $(".default").click(function(){
+	 $("#dialog1").attr("style","display:none"); 
+ });
+ 
+//actionsheet
+
+         $('#showActionSheet').on('click', function () {
+             var mask = $('#mask');
+             var weuiActionsheet = $('#weui_actionsheet');
+             weuiActionsheet.addClass('weui_actionsheet_toggle');
+             mask.show()
+                 .focus()//加focus是为了触发一次页面的重排(reflow or layout thrashing),使mask的transition动画得以正常触发
+                 .addClass('weui_fade_toggle').one('click', function () {
+                 hideActionSheet(weuiActionsheet, mask);
+             });
+             $('#actionsheet_cancel').one('click', function () {
+                 hideActionSheet(weuiActionsheet, mask);
+             });
+             mask.unbind('transitionend').unbind('webkitTransitionEnd');
+
+             function hideActionSheet(weuiActionsheet, mask) {
+                 weuiActionsheet.removeClass('weui_actionsheet_toggle');
+                 mask.removeClass('weui_fade_toggle');
+                 mask.on('transitionend', function () {
+                     mask.hide();
+                 }).on('webkitTransitionEnd', function () {
+                     mask.hide();
+                 })
+             }
+         });
+ 
+</script>
+</html>

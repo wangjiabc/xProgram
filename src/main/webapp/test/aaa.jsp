@@ -1,0 +1,3 @@
+<head>
+<META HTTP-EQUIV="Refresh" CONTENT="0;URL=https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx99f6d05c1d414d1d&redirect_uri=http://59329.ngrok.cc/xProgram/test/oauth.html&response_type=code&scope=snsapi_base&state=$state#wechat_redirect">
+</head>

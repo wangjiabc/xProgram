@@ -1,0 +1,57 @@
+{
+  "pages":[
+    "pages/yiguo/index/index",
+    "pages/yiguo/list/list",
+    "pages/yiguo/cart/cart",
+    "pages/yiguo/mine/mine",
+    "pages/yiguo/detail/detail",
+    "pages/yiguo/list0/list0",
+    "pages/yiguo/list1/list1",
+    "pages/yiguo/list2/list2",
+    "pages/yiguo/list3/list3",
+    "pages/yiguo/order/index",
+    "pages/yiguo/order-confirm/index",
+    "pages/yiguo/order-detail/index",
+    "pages/yiguo/address/index",
+    "pages/yiguo/address-add/index",
+    "pages/yiguo/address-edit/index"
+  ],
+  "tabBar": {
+    "color": "#858585",
+    "selectedColor": "#008842",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list":[
+      {
+        "pagePath": "pages/yiguo/index/index",
+        "iconPath": "images/icons/btn-tabs_01.png",
+        "selectedIconPath": "images/icons/btn-tabs_07.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/yiguo/list/list",
+        "iconPath": "images/icons/btn-tabs_03.png",
+        "selectedIconPath": "images/icons/btn-tabs_08.png",
+        "text": "全部商品"
+      },{
+        "pagePath": "pages/yiguo/cart/cart",
+        "iconPath": "images/icons/btn-tabs_05.png",
+        "selectedIconPath": "images/icons/btn-tabs_09.png",
+        "text": "购物车"
+      },
+      {
+        "pagePath": "pages/yiguo/mine/mine",
+        "iconPath": "images/icons/btn-tabs_06.png",
+        "selectedIconPath": "images/icons/btn-tabs_10.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "window":{
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#008842",
+    "navigationBarTitleText": "微信商城",
+    "navigationBarTextStyle": "white"
+  },
+  "debug": true
+}

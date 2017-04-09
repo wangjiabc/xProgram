@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xProgram.manage.mapper.OrderMapper">
+	<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>
+	<resultMap id="BaseResultMap" type="com.xProgram.manage.model.Order">
+	<id column="open_id" property="openId" jdbcType="VARCHAR" />
+	<result column="id" property="id" jdbcType="INTEGER" />	
+	<result column="campus_id" property="campusId" jdbcType="INTEGER"/>
+	<result column="food_id" property="foodId" jdbcType="INTEGER" />	
+	<result column="nickname" property="nickName" jdbcType="VARCHAR" />
+	<result column="headimg_url" property="headImgUrl" jdbcType="VARCHAR" />
+	<result column="food_count" property="foodCount" jdbcType="INTEGER"/>
+	<result column="prime_cost" property="primeCost" jdbcType="REAL" />	
+	<result column="amount" property="amount" jdbcType="INTEGER"/>
+	<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	<result column="consume_time" property="consumeTime" jdbcType="TIMESTAMP" />
+	<result column="status" property="status" jdbcType="SMALLINT" />
+	<result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+	<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+	<result column="pay_state" property="PayState" jdbcType="SMALLINT" />
+	<result column="used" property="used" jdbcType="SMALLINT" />
+	<result column="settle" property="settle" jdbcType="SMALLINT" />
+	<result column="settle_status" property="settleStatus" jdbcType="SMALLINT" />
+	<result column="img_url" property="pic_url" jdbcType="VARCHAR" /> 	
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+	   orders.open_id,orders.id,orders.campus_id,name,
+	   nickname,headimg_url,img_url,
+	   orders.food_id,
+	   amount,create_time,orders.create_time,
+	   consume_time,pay_state,
+	   orders.consume,price,food.prime_cost,used,
+	   settle,settle_status
+	</sql>
+	
+	<select id="selectAllOrdersByCampusId" resultMap="BaseResultMap" useCache="false">
+	 select
+	 <include refid="Base_Column_List" />
+	 from orders
+	 left join food
+	 on orders.food_id=food.food_id
+	 left join users
+	 on orders.open_id=users.open_id
+	 <where>
+	 	orders.campus_id=#{campusId,jdbcType=INTEGER}
+	 <if test="foodId!=null">
+	      and orders.food_id=#{foodId,jdbcType=INTEGER}
+	 </if>
+	 <if test="startTime!=null">
+		   and create_time>#{startTime,jdbcType=TIMESTAMP}
+	 </if>
+	 <if test="endTime!=null">
+		   and create_time&lt;#{endTime,jdbcType=TIMESTAMP}  <!-- &lt;是<号 -->
+	 </if>
+	 </where>
+	  order by create_time desc
+	</select>
+
+
+   <select id="getAllOrderByOpenId" resultMap="BaseResultMap" useCache="false">
+	 select
+	 <include refid="Base_Column_List" />
+	 from orders
+	 left join food
+	 on orders.food_id=food.food_id
+	 left join users
+	 on orders.open_id=users.open_id
+	 <where>
+	 	orders.campus_id=#{campusId,jdbcType=INTEGER}
+	    and
+	    orders.open_id=#{openId,jdbcType=VARCHAR}
+	    and
+	    orders.pay_state=0
+	 </where>
+	  order by create_time desc
+	</select>
+
+</mapper>

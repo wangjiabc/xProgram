@@ -1,0 +1,26 @@
+<view class="address-list">
+    <scroll-view class="scroll-list"  scroll-y="true" style="height: 100%" bindscrolltolower="lower">
+        <view class="weui-panel" >
+            <view class="weui-panel__bd">
+                <view class="weui-media-box weui-media-box_text" wx:for="{{ items }}"  wx:for-item="item" wx:key="index" data-id="{{ item.id }}">
+                    <view class="weui-media-box__title weui-media-box__title_in-text">收货人：{{ item.name }}</view>
+                    <view class="weui-media-box__title weui-media-box__title_in-text">电话：{{ item.phone }}</view>
+                    <view class="weui-media-box__desc">地址：{{ item.address }}</view>
+                    <view class="weui-media-box__info">
+                        <view class="weui-media-box__info__meta text-orangered" wx:if="{{ item.defaultAddress }}">默认地址</view>
+                        <view class="weui-media-box__info__meta" wx:if="{{ !item.defaultAddress }}" bindtap="setDefalutAddress" data-id="{{ item.id }}">设为默认</view>
+                    </view>
+                    <view class="edit" bindtap="toAddressEdit" data-id="{{ item.id }}">
+                        <image class="icon" src="/images/icons/iconfont-edit.png" />
+                    </view>
+                </view>
+            </view>
+        </view>
+
+        <template is="prompt" data="{{ prompt }}"/>
+        <view class="btn-plus" bindtap="toAddressAdd">
+            <image class="icon" src="/images/icons/iconfont-plus-circle.png" />
+            <text class="addaddress">  新增地址</text>
+        </view>
+    </scroll-view>
+</view>

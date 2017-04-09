@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xProgram.manage.mapper.ConsumeMapper">
+	<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>
+	<resultMap id="BaseResultMap" type="com.xProgram.manage.model.Consume">
+	<id column="id" property="id" jdbcType="INTEGER" />
+	<id column="open_id" property="openId" jdbcType="VARCHAR" />
+	<result column="campus_id" property="campusId" jdbcType="INTEGER"/>
+	<result column="food_id" property="foodId" jdbcType="INTEGER" />	
+	<result column="campus_admin" property="campusAdmin" jdbcType="VARCHAR" />
+	<result column="food_count" property="foodCount" jdbcType="INTEGER"/>
+	<result column="amount" property="amount" jdbcType="INTEGER"/>
+	<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	<result column="consume_time" property="consumeTime" jdbcType="TIMESTAMP" />
+	<result column="consume" property="consume" jdbcType="REAL" />	
+	<result column="total_amount" property="totalAmount" jdbcType="REAL" />
+	<result column="status" property="status" jdbcType="SMALLINT" />
+	<result column="start" property="start" jdbcType="SMALLINT" />
+	<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+	<result column="pay_state" property="PayState" jdbcType="SMALLINT" />
+	<result column="used" property="used" jdbcType="SMALLINT" />	
+	<result column="use_type" property="useType" jdbcType="SMALLINT" />	
+	<result column="name" property="named" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+	   id,open_id,orders.campus_id,orders.campus_admin,orders.food_id,
+	   amount,create_time,consume_time,pay_state,food.price,orders.consume,
+	   used,name,status,start
+	</sql>
+	
+	
+	<select id="selectConsumeInfoByOpenId" resultMap="BaseResultMap" useCache="false">
+	 select
+	 <include refid="Base_Column_List" />
+	 from orders
+	 left join food on food.food_id=orders.food_id
+	 where
+	  orders.campus_id=#{campusId,jdbcType=INTEGER}
+	 and
+	  orders.campus_Admin=#{campusAdmin,jdbcType=VARCHAR}
+	 and
+	  open_id=#{openId,jdbcType=VARCHAR}	
+	 and 
+	  orders.used=0
+	 and
+	  orders.use_type=1
+	 limit 0,1  
+	</select>
+
+    <select id="selectConsumeInfoById" resultMap="BaseResultMap" useCache="false">
+	 select
+	 <include refid="Base_Column_List" />
+	 from orders
+	 left join food on food.food_id=orders.food_id
+	 where
+	  orders.id=#{id,jdbcType=INTEGER} 
+	</select>
+	
+	<select id="selectConsumeUsedById" resultType="Integer" useCache="false">
+	 select used
+	 from orders
+	 <where>
+		id=#{id,jdbcType=INTEGER}
+	 </where>
+	</select>
+
+    <select id="selectAllConsumeByOpenId" resultMap="BaseResultMap" useCache="false">
+      select
+	 <include refid="Base_Column_List" />
+	 from orders	 
+	 left join food on food.food_id=orders.food_id
+	 where
+	  orders.campus_id=#{campusId,jdbcType=INTEGER}
+	 and
+	  open_id=#{openId,jdbcType=VARCHAR}
+	 order
+		by create_time desc	
+    </select>
+    
+    <update id="upOrderUseType" parameterType="java.lang.Integer">
+	   update orders
+		<set>
+		  use_type=0
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+    
+    <update id="upOrderUsedById" parameterType="java.lang.Integer">
+       update orders
+        <set>
+         used=1,
+         consume_time=#{consumeTime,jdbcType=TIMESTAMP}
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="upUsersConsumeByOpenId" parameterType="java.lang.Integer">
+      update users
+       <set>
+         total_amount=total_amount+#{consume,jdbcType=REAL}
+       </set>
+       where
+        campus_id=#{campusId,jdbcType=INTEGER}
+	   and
+	    open_id=#{openId,jdbcType=VARCHAR}
+    </update>
+    
+</mapper>

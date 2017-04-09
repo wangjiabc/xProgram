@@ -1,0 +1,67 @@
+<!--index.wxml-->
+<scroll-view class="container" scroll-y="true" scroll-into-view="{{toView}}"  scroll-top="{{scrollTop}}" bindscroll="scroll">
+
+
+
+<swiper indicator-dots="{{indicatorDots}}"
+  autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" class="swiper-box" id="top">
+  <block  wx:key="index" wx:for="{{banner}}" wx:for-index="idx" wx:for-item="banner" >
+    <swiper-item bindtap="lookdetail" data-id="{{banner.foodId}}">
+      <image class="slide-image" src="{{banner.pic_url}}"/>
+    </swiper-item>
+  </block>
+</swiper>
+
+
+  <view class='menueview'>
+            <view class="menueimg" wx:key="index"  wx:for="{{banner_list}}" wx:for-index="idx" wx:for-item="banner" data-id="{{banner.id}}" bindtap="menueDetail">
+              <image class='menue-image' src='{{banner.pic_url}}'/>
+               <view class="menue-1">
+               <text class="menuetext">{{banner.title}}</text>
+              </view>
+            </view>          
+    </view>
+
+ 
+
+<view class='hot-imgview0'> 
+ <image src='/images/icons/55ee55919eee8.png'/>
+</view>
+
+<view class='hg-container' id="new" > 
+        <view class='gooditem'>
+            <view class='imgview' wx:key="index"  wx:for="{{newgoods}}" wx:for-index="idx" wx:for-item="good" data-id="{{good.foodId}}" bindtap="lookdetail">
+              <image class='productimg' src='{{good.pic_url}}'/>
+            </view>
+        </view>
+</view>
+
+<view class='hot-imgview0'> 
+ <image src='/images/icons/55ee55b6573cf.jpg'/>
+</view>
+<view class='hg-container'>
+        <view class='gooditem'>
+            <view class='imgview' wx:key="index"  wx:for="{{newgoods}}" wx:for-index="idx" wx:for-item="good" data-id="{{good.foodId}}" bindtap="lookdetail">
+              <image class='productimg' src='{{good.pic_url}}'/>
+            </view>
+        </view>
+</view>
+
+<view class='hot-container'>
+  <view class="hot-title">食惠购</view>
+        <view class='hot-gooditem'>
+            <view class='hot-imgview' wx:key="index"  wx:for="{{hotgoods}}" wx:for-index="idx" wx:for-item="hot" data-id="{{hot.foodId}}" bindtap="lookdetail">
+              <image class='hot-product' src='{{hot.pic_url}}'/>
+            </view>
+        </view>
+</view>
+
+<view class="footer" bindtap="tap">
+  <view>
+  <text>test</text>
+
+  </view>
+</view>
+
+
+</scroll-view>

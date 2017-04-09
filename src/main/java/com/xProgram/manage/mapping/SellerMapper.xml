@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xProgram.manage.mapper.SellerMapper">
+	<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" />
+	<resultMap id="BaseResultMap" type="com.xProgram.manage.model.Sellers">
+		<id column="campus_admin" property="campusAdmin" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="SMALLINT" />
+		<result column="city_id" property="cityId" jdbcType="INTEGER" />
+		<result column="campus_id" property="campusId" jdbcType="INTEGER" />
+		<result column="last_login_date" property="lastLoginDate"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		campus_admin,password,type,city_id,last_login_date
+	</sql>
+
+	<select id="selectByCampusAdmin" resultMap="BaseResultMap"
+		parameterType="java.lang.String" useCache="false">
+		select
+		<include refid="Base_Column_List">
+		</include>
+		from
+		campus_admin
+		where
+		campus_admin=#{campusAdmin,jdbcType=VARCHAR}
+	</select>
+
+    <select id="selectByCampusId" resultMap="BaseResultMap"
+          parameterType="java.lang.String" useCache="false">
+          select campus_id 
+          from
+          campus
+          where
+          city_id=
+          (select city_id from
+          campus_admin where 
+          campus_admin=#{campusAdmin,jdbcType=VARCHAR}
+          ) limit 0,1 
+    </select>
+
+    <select id="getCampusAdmin" resultMap="BaseResultMap" useCache="false">
+        select campus_admin 
+        from 
+        campus_admin
+        where 
+        campus_admin=#{campusAdmin,jdbcType=VARCHAR}    
+    </select>
+
+    <select id="getAllCampusAdmin" resultMap="BaseResultMap" useCache="false">
+        select campus_admin 
+        from 
+        campus_admin
+        where 
+        type=1    
+    </select>
+
+	<update id="updateLastLoginTime">
+		update campus_admin
+		set last_login_date =
+		#{date,jdbcType=TIMESTAMP}
+		where
+		campus_admin = #{campusAdmin,jdbcType=VARCHAR}
+	</update>
+
+    <select id="selectMaxCityId" resultType="Integer">
+       select max(city_id) 
+       from
+       campus_admin
+    </select>
+
+	<insert id="insertSellective" parameterType="com.xProgram.manage.model.Sellers">
+		insert into campus_admin
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="campusAdmin!=null">
+				campus_admin,
+			</if>
+			<if test="password!=null">
+				password,
+			</if>
+			<if test="type!=null">
+				type,
+			</if>
+			<if test="cityId!=null">
+			    city_id,
+			</if>
+			<if test="telePhone!=null">
+			   telephone,
+			</if>
+			<if test="address!=null">
+			   address,
+			</if>
+			<if test="registerTime!=null">
+			  register_time,
+			</if>			
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="campusAdmin!=null">
+				#{campusAdmin,jdbcType=VARCHAR},
+			</if>
+			<if test="password!=null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="type!=null">
+				#{type,jdbcType=SMALLINT},
+			</if>
+			<if test="cityId!=null">
+			    #{cityId,jdbcType=INTEGER},
+			</if>
+			<if test="telePhone!=null">
+			   #{telePhone,jdbcType=INTEGER},
+			</if>
+			<if test="address!=null">
+			   #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="registerTime!=null">
+			  #{registerTime,jdbcType=TIMESTAMP},
+			</if>	
+		</trim>
+	</insert>
+	
+   <select id="selectRepeatAdmin" parameterType="java.lang.String"
+          resultType="Integer">
+     select count(*) 
+     from 
+     campus_admin
+     <where>
+      campus_admin=#{campusAdmin,jdbcType=VARCHAR}
+     </where>
+     
+   </select>
+	
+</mapper>
+

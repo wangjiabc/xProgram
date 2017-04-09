@@ -1,0 +1,36 @@
+<view class="user">
+        <view class="user-pic"><image src="{{userInfo.avatarUrl}}"></image></view>
+        <view class="user-name">{{userInfo.nickName}}</view>
+    </view>
+
+<view class="address">
+    <view class="weui-panel">
+        <view class="weui-panel__bd">
+             <view class="weui-media-box weui-media-box_text" wx:for="{{ address }}"  wx:for-item="item" wx:key="index" data-id="{{ item.id }}">
+                <view class="weui-media-box__desc">{{ item.address }}</view>
+                <view class="addr">
+                    <image class="icon" src="/images/icons/iconfont-addr-default.png" />
+                </view>
+                <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+               </view>
+        </view>
+    </view>
+</view>
+
+<view class="weui-form-preview">
+    <view class="weui-form-preview__hd">
+        <view class="weui-form-preview__item">
+            <view class="weui-form-preview__label">订单总价</view>
+            <view class="weui-form-preview__value_in-hd">¥ {{ total_prices}}</view>
+        </view>
+    </view>
+    <view class="weui-form-preview__bd">
+        <view class="weui-form-preview__item"  wx:for="{{items}}" wx:for-item="item" wx:key="index" data-id="{{item.id}}">
+            <view class="weui-form-preview__label">{{ item.name }}</view>
+            <view class="weui-form-preview__value"> ¥ {{ item.price }}x{{ item.amount }}</view>
+        </view>
+    </view>
+    <view class="weui-form-preview__ft">
+        <navigator url="" class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active" bindtap="addOrder">提交订单</navigator>
+    </view>
+</view>

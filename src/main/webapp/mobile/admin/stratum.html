@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang='en'>
+<meta name="viewport" content="width=device-width, initial-scale=1" user-scalable=0 charset='utf-8'>
+<head>
+<title>Weixin后台管理</title>
+
+
+ <script type="text/javascript">
+	if(typeof(EventSource) !== "undefined") {
+		 var evtSource = new EventSource("/xProgram/sse");
+         var alertdialog=document.getElementById("alertdialog");
+         var alertchar=document.getElementById("alertchar");
+		 evtSource.addEventListener("ping", function(e){
+			var obj = JSON.parse(e.data);
+			 $("#mask").attr("style","display:none");
+			 $("#weui_actionsheet").removeClass("weui_actionsheet_toggle");
+			 $("#dialog1").attr("style","display:block");
+			 $("#affirmBody").html(
+					 "<img src='"+obj.imgUrl+"' width='44px' height='44px' style='border-radius:50%;'>"+
+					 "<br />昵称 : "+obj.nickName+
+					 "<br />订单号 : "+obj.id+
+					 "<br />商品号 : "+obj.foodId+
+					 "<br />商品名称 : "+obj.campusName+
+					 "<br />商品数量 : "+obj.amount+
+					 "<br />所属商家 : "+obj.campusAdmin
+					 );
+		     
+		     if(obj.j>50){
+		    	 $("#dialog1").attr("style","display:none");
+		     }
+		     
+		 	$(".primary").on("click",function(){
+		 		$.ajax({
+					url: "/xProgram/consumemanage/commit.do",
+					type: "post",
+					data:{campusAdmin:obj.campusAdmin,campusId:obj.campusId,
+                          openId:obj.openId,id:obj.id},
+					dataType:'json',
+					success:function(data){
+						$("#dialog1").attr("style","display:none");
+						if(data==1){							
+							$('#toast').show();
+						     setTimeout(function () {
+						         $('#toast').hide();
+						     }, 2000);
+						  }else{
+							alert("确认失败");
+						 }
+					}
+				});
+			});
+			
+		     
+		     $(".default").on("click",function(){
+		    	 $.post("/xProgram/consumemanage/cancel.do", {
+		             campusAdmin:obj.campusAdmin,
+		             keyCode:obj.keyCode
+		    	}, function(data) {
+		    		$("#dialog1").attr("style","display:none");
+		    	});
+		     });
+		     
+		    console.log(obj.campusAdmin+"  "+e.data);
+		  }, false);
+
+		  evtSource.addEventListener("open", function(e) {
+		    // Connection was opened.
+			 console.log("sse open");
+		  }, false);
+
+		  evtSource.addEventListener("error", function(e) {
+		  }, false);
+		  
+		  evtSource.addEventListener("close", function(e) {
+		      
+			  }, false);
+		  
+		} else {
+			 alert("您的浏览器不支持的EventSource,请更换浏览器");
+	}
+	
+</script>
+ 
+
+<link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/bootstrap-table/bootstrap-table.css">
+<link rel="stylesheet" href="../../assets/bootstrap-table/bootstrap-editable.css">
+<script src="../../assets/bootstrap-table/jquery.min.js"></script>
+<script src="../../assets/bootstrap-table/bootstrap.min.js"></script>
+<script src="../../assets/bootstrap-table/bootstrap-table.js"></script>
+<script src="../../assets/bootstrap-table/bootstrap-table-export.js"></script>
+<script src="../../assets/bootstrap-table/tableExport.js"></script>
+<script src="../../assets/bootstrap-table/bootstrap-table-editable.js"></script>
+<script src="../../assets/bootstrap-table/bootstrap-editable.js"></script>
+<script src="../../js/bootstrap-table-zh-CN.min.js"></script>
+
+<script type='text/javascript' src="../../js/bootstrap.min.js"></script>
+<script type='text/javascript' src="../../js/main.js"></script>
+<script type="text/javascript" src="../../js/util.js"></script>
+
+<link rel="stylesheet" href="../../weixinUI/style/weui.css"/>
+
+</head>
+
+<body>
+<!--BEGIN dialog1-->
+ <div class="weui_dialog_confirm" id="dialog1" style="display: none;">
+    <div class="weui_mask"></div>
+    <div class="weui_dialog">
+        <div class="weui_dialog_hd"><strong class="weui_dialog_title"></strong></div>
+        <div class="weui_dialog_bd" id="affirmBody"></div>
+        <div class="weui_dialog_ft">
+            <a href="javascript:;" class="weui_btn_dialog default">取消</a>
+            <a href="javascript:;" class="weui_btn_dialog primary">确定</a>
+        </div>
+    </div>
+ </div>
+
+ <div id="toast" style="display: none;">
+    <div class="weui_mask_transparent"></div>
+    <div class="weui_toast">
+        <i class="weui_icon_toast"></i>
+        <p class="weui_toast_content">确认成功</p>
+    </div>
+ </div>
+
+ <div class="weui_msg" id="msgSuccess" style="display: none;">
+    <div class="weui_icon_area"><i class="weui_icon_success weui_icon_msg"></i></div>
+    <div class="weui_text_area">
+        <h2 class="weui_msg_title"></h2>
+        <p class="weui_msg_desc"></p>
+    </div>
+    <div class="weui_opr_area">
+        <p class="weui_btn_area">
+            <a href="javascript:;" class="weui_btn weui_btn_primary">确定</a> 
+        </p>
+    </div>
+ </div>
+
+ <div class="weui_msg" id="msgWarn" style="display: none;">
+    <div class="weui_icon_area"><i class="weui_icon_warn weui_icon_msg"></i></div>
+    <div class="weui_text_area">
+        <h2 class="weui_msg_title"></h2>
+        <p class="weui_msg_desc"></p>
+    </div>
+    <div class="weui_opr_area">
+        <p class="weui_btn_area">
+            <a href="javascript:;" class="weui_btn weui_btn_primary">确定</a> 
+        </p>
+    </div>
+ </div>
+
+ <div id="loadingToast" class="weui_loading_toast" style="display:none;">
+    <div class="weui_mask_transparent"></div>
+    <div class="weui_toast">
+        <div class="weui_loading">
+            <div class="weui_loading_leaf weui_loading_leaf_0"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_1"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_2"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_3"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_4"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_5"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_6"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_7"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_8"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_9"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_10"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_11"></div>
+        </div>
+        <p class="weui_toast_content">数据加载中</p>
+    </div>
+  </div>
+
+<div id="actionSheet_wrap">
+    <div class="weui_mask_transition" id="mask" style="display: none;"></div>
+    <div class="weui_actionsheet" id="weui_actionsheet">
+        <div class="weui_actionsheet_menu">
+            <div class="weui_actionsheet_cell"></div>
+        </div>
+        <div class="weui_actionsheet_action">
+            <div class="weui_actionsheet_cell" id="actionsheet_cancel">取消</div>
+        </div>
+    </div>
+</div>
+ 
+ <header class='navbar blue navbar-fixed-top'>
+		<div class='navbar-inner'>
+			<div class='container-fluid'>
+				<a class='brand pull-left' ><img src="../../img/icon.png" width="20px" height="auto">&nbsp;
+				</a><a  class='brand pull-left' id="brand">For</a>
+				<ul class='nav pull-right'>
+					<li>
+						<!-- 添加校区下拉菜单 -->
+						<div class="dropdown" id="campusDropdown">
+							<button type="button" class="btn dropdown-toggle"
+								id="dropdownMenu1" data-toggle="dropdown">
+								<span class="change">选择公众号</span> <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" id="dropdown-campus"
+							  style="height: 200px; overflow: auto">
+
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+	   <div class='navbar-inner'>
+			<div class='container-fluid'>
+				<ul class='pull-left'>
+					<li style="list-style-type:none;">
+                        <a href="../xProgram/user/logout.do">
+                        <i class='icon-white icon-off'></i></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+	</header>
+ <div class="mainElement">
+  <div class="navbar-inner" style="height:35px;background-color:#44b549;"> </div>
+ </div>
+ 
+  <!-- 警告对话框 -->	
+	<div class="modal fade" id="alertdialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header blue">
+                   <div >
+                    	<strong id="alertchar" style="font-size:20px"></strong>
+                   </div>
+        
+                   <div class="modal-footer">
+			           <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			           <button type="button" id="commitFoodDataButton" class="btn btn-primary">确定</button>
+	               </div> 
+              </div>
+         </div>
+       </div>
+   </div>
+ 
+  <div id="toolbar" class="btn-group">
+					<button id="addFoodCountBtn" type="button" class="btn btn-default">
+						添加库存
+					</button>
+					 <button id="QRCode" type="button" class="btn btn-default">
+					 <img src="../../img/MQr.jpg" width="17px" height="17px" style="margin:0 0 1px 0;">
+						二维码
+					</button>			 
+   </div>
+   
+			
+		<div id="maintable">
+			      <table id="table" data-id-field="foodId" data-striped="true"
+					data-toolbar="#toolbar"
+					 data-show-toggle="true"
+					data-pagination="true" data-show-columns="true" data-height="80%"
+					data-click-to-select="true">
+					<thead>
+						<tr>
+							<th data-field="state" data-checkbox="true"></th>
+							<th data-align="left" data-field="foodId" >ID</th>
+							<th data-align="left" data-field="campusAdmin"  data-visible="false" data-formatter="actionName">商家</th>
+							<th data-align="left" data-field="imgUrl" data-formatter="actionImg" data-visible="false" data-formatter="actionName">商品图片</th>
+							<th data-align="left" data-field="name" data-formatter="actionName">名&nbsp;&nbsp;&nbsp;&nbsp;称</th>												
+							<th data-align="left" data-field="price" data-formatter="actionName">价格</th>
+							<th data-align="left" data-field="primeCost" data-visible="false" data-formatter="actionName">成本价</th>
+							<th data-align="left" data-field="foodAllCount" data-formatter="actionName">总数</th>
+							<th data-align="left" data-field="foodCount" data-formatter="actionName">库存</th>	
+							 <th data-align="left" data-field="start" data-formatter="actionStatus" data-formatter="actionName">状态</th>	
+							 <th data-align="left" data-field="status" data-sortable="true" data-formatter="statusFormatter" data-visible="false" data-formatter="actionName">审核情况</th>
+							<th data-align="left" data-field="startTime2" data-sortable="true" data-visible="false" data-formatter="actionName">开始时间</th>
+							<th data-align="left" data-field="endTime2" data-sortable="true" data-visible="false" data-formatter="actionName">结束时间</th>									
+						</tr>
+					</thead>
+				</table>
+		</div>
+ 
+ 	<!-- 添加库存modal start -->
+	<div class="modal fade" id="addFoodCountModal" tabindex="-1" role="dialog" aria-labelledby="addFoodCountModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+					</button>
+					<h4 class="modal-title" id="addFoodCountModalLabel">添加库存</h4>
+				</div>
+				<form class="form-horizontal" role="form">
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="count_add_count" class="control-label col-md-2">商品库存</label>
+							<div class="col-md-10">
+								<input type="number" class="form-control" id="count_add_count" name="addCount">
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary" id="addFoodCountSubmit">提交更改</button>
+					</div>
+					<script type="text/javascript">
+					 $("#addFoodCountSubmit").on("click",function(){
+						var array = $("#table").bootstrapTable('getSelections');
+						var foodCount1=array[0].foodCount;
+						var foodCount=$("#count_add_count").val();
+						var foodId=array[0].foodId;
+						if(foodCount<1){
+							alert("添加库存不能为0");
+							return;
+						}
+						$.post("../../service/addFoodCountById.do", {
+			                 foodId:foodId,
+			                 foodCount:foodCount
+						}, function(text) {
+							if (text == -1 || text == 0) {
+								$("#addFoodCountModal").modal('hide');
+								setSuccess("失败。");
+							} else {
+								$("#addFoodCountModal").modal('hide');
+								setSuccess("成功。");
+								
+								campusId = getCookie("campusId");
+								
+								 $(" #table").bootstrapTable('refresh',{
+										url : "../../mobileService/getAllFoods.do?campusId="+campusId+"&datepicker=null&datepicker2=null"
+								});	
+							}
+						});
+						
+					 });
+					</script>
+				</form>
+				
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+	</div>
+	<!-- 添加库存modal end -->
+ 
+</body>
+<style type="text/css">  <!--避免bootstrap框架窗口变化造成元素高度的变化 -->
+.navbar-inner{
+background: -moz-linear-gradient(top,  #44b549 0%, #227700 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#227700), color-stop(100%,#44b549)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #44b549 0%,#227700 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #44b549 0%,#227700 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #44b549 0%,#227700 100%); /* IE10+ */
+background: linear-gradient(top,  #44b549 0%,#227700 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cc0956ae', endColorstr='#d9024a9e',GradientType=0 ); /* IE6-9 */
+}
+
+#brand{
+ color:#000;
+ font-size:16px;
+ padding: 5px 0 0 0 ;
+}
+
+.pull-left{
+   padding: 5px 0 0 0 ;
+}
+
+.change{
+  color:red;
+}
+
+ .result-icon{
+ position: relative;
+  top:2px;
+  display: inline-block;
+
+   width:26px;
+   height:15px;
+  }
+ .result-fail{
+  background-image:url('../../img/weixin.png') ;
+  background-repeat:no-repeat;
+  -moz-background-size: 25px 18px;
+    -webkit-background-size: 25px 18px;
+    -o-background-size: 25px 18px;
+    background-size: 25px 18px;
+}
+
+.icon-white{
+ position: relative;
+  display: inline-block;
+  margin:3px 0 0 10px;
+   width:30px;
+   height:30px;
+  }
+
+.icon-off{
+  background-image:url('../../img/out.jpg') ;
+  background-repeat:no-repeat;
+  -moz-background-size: 20px 20px;
+    -webkit-background-size: 20px 20px;
+    -o-background-size: 20px 20px;
+    background-size: 20px 20px;
+}
+
+.qrimgUlr img{ width: 20px; height: 20px; vertical-align: middle;}
+
+</style>
+
+<script type="text/javascript">
+ var u = navigator.userAgent;
+ var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+ var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+ if(isAndroid||isiOS){
+
+ }else{
+	 location.href="../../admin.html";
+ }
+</script>
+<script type="text/javascript" src="admin.js"></script>
+</html>

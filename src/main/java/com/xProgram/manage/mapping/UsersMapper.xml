@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xProgram.manage.mapper.UsersMapper">
+	<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" />
+	<resultMap id="BaseResultMap" type="com.xProgram.manage.model.Users">
+	    <id column="id" property="id" jdbcType="INTEGER" />
+	    <id column="open_id" property="openId" jdbcType="VARCHAR" />
+	    <result column="campus_id" property="campusId" jdbcType="INTEGER" />
+	    <result column="groupid" property="groupId" jdbcType="VARCHAR" />
+	    <result column="city" property="city" jdbcType="VARCHAR" />
+	    <result column="country" property="country" jdbcType="VARCHAR" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+	    <result column="total_amount" property="totalAmount" jdbcType="REAL" />
+	    <result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="language" property="language" jdbcType="VARCHAR" />
+		<result column="nickname" property="nickname" jdbcType="VARCHAR" />
+		<result column="headimg_url" property="headImgUrl" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="SMALLINT" />
+		<result column="total_amount" property="totalAmount" jdbcType="REAL" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="phone" property="phone" jdbcType="VARCHAR" />
+	    <result column="address" property="address" jdbcType="VARCHAR" />	
+		<result column="default_address" property="defaultAddress"
+			jdbcType="SMALLINT" />	
+		<result column="rank" property="rank" jdbcType="VARCHAR" />		
+	</resultMap>
+   
+   <select id="getUserByOpenId" resultMap="BaseResultMap" useCache="false">
+		select
+		id,users.open_id,total_amount,
+		campus_id,nickname, headimg_url,
+		language,province,groupid,country,
+		city,sex,remark,
+		address ,phone
+		 as default_address
+		from users
+		left join usersinfo
+		on
+		users.open_id = usersinfo.open_id
+		<where>
+			users.campus_id=#{campusId,jdbcType=INTEGER}
+	        and
+			users.open_id=#{openId,jdbcType=VARCHAR}
+	    </where>
+	</select>
+
+
+   <select id="getOpenId"  resultType="Integer" useCache="false">
+    select
+     count(*)
+    from
+     users
+     <where>
+      	users.campus_id=#{campusId,jdbcType=INTEGER}
+		and
+		users.open_id=#{openId,jdbcType=VARCHAR}
+     </where>
+   </select>
+   
+   <select id="getAllFullUser" resultMap="BaseResultMap" useCache="false">
+		select
+		users.id,users.open_id,
+		users.campus_id,nickname, headimg_url,
+		language,province,groupid,country,
+		city,sex,remark,
+		total_amount,
+		phone,
+		address as default_address
+		from users
+		left join usersinfo
+		on
+		users.open_id = usersinfo.open_id
+		<where>
+			users.campus_id=#{campusId,jdbcType=INTEGER}
+		<if test="search != null and search !='' ">
+				and (nickname like #{search,jdbcType=VARCHAR} or
+				usersinfo.phone like
+				#{search,jdbcType=VARCHAR} or usersinfo.address like #{search,jdbcType=VARCHAR})
+			</if>
+			<if test="sort != null">
+				order by ${sort}
+			</if>
+			<if test="sort != null and order != null">
+				${order}
+			</if>
+		</where>
+		<if test="offset != null and limit != null">
+			limit #{offset,jdbcType=INTEGER} ,
+			#{limit,jdbcType=INTEGER}
+		</if>		
+	</select>
+
+
+    <select id="getUserCount" resultType="Integer" useCache="false">
+		select
+		count("*")
+		from
+		users left join usersinfo
+		on
+		users.open_id = usersinfo.open_id
+		<where>
+		   users.campus_id=#{campusId,jdbcType=INTEGER} 
+           and users.campus_admin=#{campusAdmin,jdbcType=VARCHAR}
+			<if test="search != null and search !='' ">
+				and (nickname like #{search,jdbcType=VARCHAR} or usersinfo.phone like
+				#{search,jdbcType=VARCHAR} or usersinfo.address like #{search,jdbcType=VARCHAR})
+			</if>
+		</where>
+	</select>
+	
+	 <select id="getUserFullCount" resultType="Integer" useCache="false">
+		select
+		count("*")
+		from
+		users left join usersinfo
+		on
+		users.open_id = usersinfo.open_id
+		<where>
+		   users.campus_id=#{campusId,jdbcType=INTEGER} 
+			<if test="search != null and search !='' ">
+				and (nickname like #{search,jdbcType=VARCHAR} or usersinfo.phone like
+				#{search,jdbcType=VARCHAR} or usersinfo.address like #{search,jdbcType=VARCHAR})
+			</if>
+		</where>
+	</select>
+
+    <insert id="insertUserInfo" parameterType="com.xProgram.manage.model.SNSUserInfo">
+	   insert into users 
+       <trim prefix="(" suffix=")" suffixOverrides=",">
+		open_id, 
+		campus_id,nickname, headimg_url,
+		language,province,country,
+		city,sex,
+	  </trim>
+	  <trim prefix="values (" suffix=")" suffixOverrides=",">
+		#{openId,jdbcType=VARCHAR}, 
+		#{campusId,jdbcType=INTEGER},
+		#{nickname,jdbcType=VARCHAR},
+		#{headImgUrl,jdbcType=VARCHAR},
+		#{language,jdbcType=VARCHAR},
+		#{province,jdbcType=INTEGER},
+		#{country,jdbcType=VARCHAR},
+		#{city,jdbcType=VARCHAR},
+		#{sex,jdbcType=SMALLINT},
+	  </trim>
+	</insert>
+
+
+    <update id="upUserByOpenId" parameterType="com.xProgram.manage.model.SNSUserInfo">
+     update users
+      <set>
+		nickname=#{nickname,jdbcType=VARCHAR},
+		headimg_url=#{headImgUrl,jdbcType=VARCHAR},
+		language=#{language,jdbcType=VARCHAR},
+		province=#{province,jdbcType=INTEGER},
+		country=#{country,jdbcType=VARCHAR},
+		city=#{city,jdbcType=VARCHAR},
+		sex=#{sex,jdbcType=SMALLINT},
+      </set>
+      <where>
+      	users.campus_id=#{campusId,jdbcType=INTEGER}
+		and
+		users.open_id=#{openId,jdbcType=VARCHAR}
+     </where>      
+    </update>
+
+   <select id="getAddress" resultMap="BaseResultMap" useCache="false">
+    select *from
+    usersinfo
+    <where>
+     open_id=#{openId,jdbcType=VARCHAR}
+    </where>
+   </select>
+
+   <insert id="insertInfoforUser">
+     insert into usersinfo 
+       <trim prefix="(" suffix=")" suffixOverrides=",">
+		campus_id,open_id, phone,
+		name,address,default_address
+	  </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=","> 
+		#{campusId,jdbcType=INTEGER},
+		#{openId,jdbcType=VARCHAR},
+		#{phone,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{address,jdbcType=VARCHAR},
+		#{default_address,jdbcType=VARCHAR},
+	  </trim>
+   </insert>
+
+   <update id="upUserInfo">
+    update usersinfo
+    <set>
+    <if test="phone != null">
+       phone=#{phone,jdbcType=VARCHAR},
+    </if>
+    <if test="name != null">
+		name=#{name,jdbcType=VARCHAR},
+	</if>
+	<if test="address != null">
+		address=#{address,jdbcType=VARCHAR},
+	</if>
+	<if test="default_address != null">
+		default_address=#{default_address,jdbcType=VARCHAR},
+	</if>
+    </set>
+    <where>
+      id=#{id,jdbcType=INTEGER}
+    </where>
+   </update>
+   
+   <update id="setDefaultAddress0">
+    update usersinfo
+    <set>
+     default_address=0
+    </set>
+    <where>
+     open_id=#{openId,jdbcType=VARCHAR}
+    </where>
+   </update>
+   
+   <update id="setDefaultAddress">
+    update usersinfo
+    <set>
+     default_address=1
+    </set>
+    <where>
+     id=#{id,jdbcType=INTEGER}
+    </where>
+   </update>
+   
+   <delete id="delAddress">
+    delete from 
+    usersinfo
+    <where>
+     id=#{id,jdbcType=INTEGER}
+    </where>
+   </delete>
+   
+</mapper>

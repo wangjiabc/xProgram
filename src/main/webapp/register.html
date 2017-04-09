@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>注册</title>
+<!-- Custom Theme files -->
+<link rel='stylesheet' type='text/css' href='css/bootstrap.min.css'>
+<link  rel="stylesheet" href="register/style.css" type="text/css" media="all"/>
+<script type='text/javascript' src="js/jquery.js"></script>
+<script type='text/javascript' src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="register/register.js"></script>
+
+<!-- 警告对话框 -->	
+<script src="sweetalert/sweetalert.min.js"></script>
+<link rel="stylesheet" type="text/css" href="sweetalert/sweetalert.css"> 
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+		.message{
+			color: red
+		}
+		#dropdownMenu1, [role=presentation]{
+			width:220px;
+		}
+		.modal{
+		  left:600px;
+		  width:700px;
+		}
+	</style>
+</head>
+
+<body>
+<div class="container">
+ <div class="row">
+	<div class="span12">
+	 <div class="modal show" id="loginModal" aria-hidden="true">
+		<div class="modal-header">
+			<h2>新用户注册</h2>
+	    </div>
+	    <div class="modal-body">
+		  <form method="post" id="mainform" class="form-horizontal" >  
+		   <div id="username" class="control-group">
+			  <label class="control-label">用户名:</label>
+			  <div class="controls">
+			   <input type="text" name="username" />
+			  </div>
+	       </div>
+		   <div id="password" class="control-group">
+		      <label class="control-label">密码:</label>
+		      <div class="controls">
+			   <input type="password" name="password" />			   
+			  </div>
+		   </div>
+		  <div id='validate' class="control-group">
+		      <label class="control-label">确认密码:</label>
+		      <div class="controls">
+			   <input type="password" name="password2" />
+			  </div>
+		 </div>
+		 <div id="telephone" class="control-group">
+			 <label class="control-label">电话号码:</label>
+			 <div class="controls">
+			  <input type="text" name="telephone" />
+			 </div>		 
+		 </div>
+		 <div id="email" class="control-group">
+			 <label class="control-label">门店地址:</label>
+			 <div class="controls">
+			  <input type="text" name="email" />
+			 </div>		 
+		 </div>
+		 <div id="ver" class="control-group">
+			  <label class="control-label">验证码:</label>
+			
+			    <input id="re_ver_input" maxlength="4" name="regtlx" type="text">
+			 
+			  <img id="re_img1" src="/xProgram/register/getYzm.do">
+			  <a id="re_imgclick" onclick="refreshValidatecode(); return false" href="javascript:void(0)" class="f12">看不清？</a>
+		 </div>
+	    </form>	   
+	</div>
+   <div class="modal-footer">
+	 <p id="agreement">
+        <input type="checkbox" id="chkagreement" > 
+        <span>我已阅读并同意</span><a target="_blank" href="home/emissary">《Weixin使用协议》</a>
+        <span id="chkagreement_Tip"></span>
+      </p>
+      <div id="confirm" class="pull-left message"></div>
+       <button type="button" id="register" name="action" class="btn btn-primary">&nbsp;确定&nbsp;</button>
+	   <div id="loginOpt" target="_blank"class="inline">已有账号<a href="index.html">去登录</a></div>
+    </div>
+
+   </div>
+  </div>
+ </div>
+</div>
+
+
+</body>
+<script type="text/javascript">
+ function refreshValidatecode(){
+	 var img=document.getElementById('re_img1');
+	 img.src="/xProgram/register/getYzm.do?t="+Math.random();
+ }
+ 
+</script>
+</html>

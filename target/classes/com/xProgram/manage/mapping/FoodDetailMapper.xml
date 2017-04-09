@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xProgram.manage.mapper.FoodDetailMapper" >
+ <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" />
+  <resultMap id="BaseResultMap" type="com.xProgram.manage.model.FoodDetail" >
+    <id column="food_id" property="foodId" jdbcType="INTEGER" />
+    <result column="campus_id" property="campusId" jdbcType="INTEGER"/>
+    <result column="use_time" property="useTime" jdbcType="VARCHAR" />
+    <result column="bespoke" property="besPoke" jdbcType="VARCHAR" />
+    <result column="rule" property="rule" jdbcType="VARCHAR" />
+    <result column="cue" property="cue" jdbcType="VARCHAR" />
+    <result column="img_url" property="imgUrl" jdbcType="VARCHAR" /> 
+    <result column="food_url" property="foodUrl" jdbcType="VARCHAR" /> 
+    <result column="price" property="price" jdbcType="REAL" />	
+  </resultMap>
+  
+   <sql id="Base_Column_List" >
+    food_detail.food_id,campus_id,use_time,bespoke,rule,cue,name,food_url,price,img_url
+  </sql>
+  
+   <select id="getFoodDetailByKey" resultMap="BaseResultMap" useCache="false">
+    select 
+    <include refid="Base_Column_List" /> 
+    from food_detail left join food
+     on food.food_id=food_detail.food_id 
+    where
+    food_detail.food_id=#{foodId,jdbcType=INTEGER}
+   </select>
+   
+   <insert id="insertId" parameterType="java.lang.Integer">
+    insert into food_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+     food_id,
+    </trim>
+     <trim prefix="values (" suffix=")" suffixOverrides=",">
+     #{foodId,jdbcType=INTEGER}
+    </trim>
+   </insert>
+   
+   
+   
+   <update id="insertSelective" parameterType="com.xProgram.manage.model.FoodDetail">
+     update food_detail
+    <set>
+	  <if test="useTime !=null">
+	   use_time=#{useTime,jdbcType=VARCHAR},
+	  </if>
+	  <if test="besPoke !=null">
+	   bespoke=#{besPoke,jdbcType=VARCHAR},
+	  </if>
+	  <if test="rule !=null">
+	   rule=#{rule,jdbcType=VARCHAR},
+	  </if>
+	  <if test="cue !=null">
+	   cue=#{cue,jdbcType=VARCHAR}
+	  </if>
+	 </set>
+	   where food_id=#{foodId,jdbcType=INTEGER}
+	</update> 
+	
+	<update id="upImgUrl" parameterType="com.xProgram.manage.model.FoodDetail">
+	  update food 
+	  <set>
+	   <if test="imgUrl !=null">
+	    img_url=#{imgUrl,jdbcType=VARCHAR}
+	   </if>
+	  </set>
+	  where food_id=#{foodId,jdbcType=INTEGER}
+	</update>
+	
+	<update id="insertUrl" parameterType="com.xProgram.manage.model.FoodDetail">
+	 update food_detail
+	 <set>
+	  food_url=#{foodUrl,jdbcType=VARCHAR}
+	 </set>
+	  where food_id=#{foodId,jdbcType=INTEGER}
+	</update>
+	
+	<delete id="deleteByPrimaryKey" >
+		delete
+		from
+		food_detail
+		<where>
+			food_id=#{foodId,jdbcType=INTEGER}
+		</where>
+	</delete>
+	  
+</mapper>
