@@ -27,8 +27,8 @@
    
    <select id="getUserByOpenId" resultMap="BaseResultMap" useCache="false">
 		select
-		id,users.open_id,total_amount,
-		campus_id,nickname, headimg_url,
+		users.id,users.open_id,total_amount,
+		users.campus_id,nickname, headimg_url,
 		language,province,groupid,country,
 		city,sex,remark,
 		address ,phone

@@ -51,7 +51,7 @@ public class PageSlideServiceImpl implements PageSlideService{
 	@Override
 	public List<Items> selectAllPageSpecialFood(Integer campusId) {
 		// TODO Auto-generated method stub
-		List<Items> items=pageSlideMapper.selectAllPageSlideFood(campusId);
+		List<Items> items=pageSlideMapper.selectAllPageSpecialFood(campusId);
 		return items;
 	}
 

@@ -105,6 +105,8 @@ public class indexController {
 		
 		items=pageSlideService.selectAllPageSpecialFood(campusId);
 		
+		System.out.println(items);
+		
 		JSONArray jsonArray=new JSONArray();
 		jsonArray.add(items);
 		
