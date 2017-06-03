@@ -198,7 +198,7 @@ public class userInfoController {
 	public @ResponseBody String 
 	getGroupInfo(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam String jsCode,@RequestParam String iv,
-			@RequestParam String encryptedData)
+			@RequestParam String encryptedData,@RequestParam boolean isTransmit)
 			throws ServletException, IOException {
 		    int campusId=1;
 
