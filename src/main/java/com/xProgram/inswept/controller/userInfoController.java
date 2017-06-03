@@ -194,6 +194,23 @@ public class userInfoController {
 		
 	}
 	
+	@RequestMapping("/getGroupInfo")
+	public @ResponseBody String 
+	getGroupInfo(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam String jsCode,@RequestParam String iv,
+			@RequestParam String encryptedData)
+			throws ServletException, IOException {
+		    int campusId=1;
+
+		    SNSUserInfo snsUserInfo=null;
+		    
+		    JSONObject jsonObject;
+
+		    jsonObject=getWxInfo(jsCode, iv, encryptedData);
+		    
+		    return jsonObject.toString();
+	}
+	
 	@RequestMapping("/getKey")
 	public @ResponseBody String 
 	getkey(HttpServletRequest request, HttpServletResponse response,

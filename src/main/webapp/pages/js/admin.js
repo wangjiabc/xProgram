@@ -3,6 +3,11 @@ $('#auser').click(function(){
    $('#content').attr('src','pages/user.html');
  });
 
+$('#auserAnalyse').click(function(){
+	   $('#content').load('pages/userAnalyse.html');
+	   $('#content').attr('src','pages/userAnalyse.html');
+	 });
+
 $('#aeject').click(function(){
 	   $('#content').load('pages/food.html');
 	   $('#content').attr('src','pages/food.html');
