@@ -113,6 +113,7 @@ public class userGroupController {
 		    
 		    Map<String, Object> gidMap=new HashMap<>();
 		    gidMap.put("openGId", openGId);
+		    gidMap.put("currentTime", currentTime);
 		    
 		    Integer isOpenGId=usersGroupService.getOpenGId(gidMap);
 		    if(isOpenGId.equals(0))
@@ -126,17 +127,24 @@ public class userGroupController {
 			Integer isOpenIdGId=usersGroupService.getOpenIdByGroupNexus(groupMap);
 			
 			UsersGroup usersGroup=new UsersGroup();   
-			usersGroup.setOpenId(openId);
 			usersGroup.setFinallyTime(currentTime);
-			
-		if(isOpenIdGId.equals(0)){
-			if(isTransmit){
+				
+		if(isTransmit){
+		  if(isOpenIdGId.equals(0)){
 			  usersGroup.setIsShare(0);
 			  usersGroup.setOpenGId(openGId);
+			  insertGroupNexus(usersGroup);
 			}else {
 				usersGroup.setIsShare(1);
-				usersGroup.setParentOpenGid(openGId);
+				usersGroupService.updateTotal(groupMap);
 			}
+		 }else if(!isTransmit){
+			 Integer isParentOpenId=
+						usersGroupService.getParentOpenIdByGroupNexus(groupMap);
+			 if(isParentOpenId.equals(0)){
+			   usersGroup.setParentOpenGid(openGId);
+			   usersGroupService.insertGroupNexus(usersGroup);
+			 }
 		 }else {
 			Map<String, Object> add=new HashMap<>();
 			add.put("openId", openId);
@@ -145,7 +153,7 @@ public class userGroupController {
 			usersGroupService.updateTotal(add);
 		  }	   
 			
-		    insertGroupNexus(usersGroup);
+		    
 	    
 		    return jsonObject.toString();
 	}

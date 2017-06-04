@@ -13,6 +13,8 @@ public interface UsersGroupService {
 	
 	Integer getOpenIdByGroupNexus(Map<String, Object> map);
 	
+	Integer getParentOpenIdByGroupNexus(Map<String, Object> map);
+	
 	Integer insertGroup(Map<String, Object> map);
 	
 	Integer insertGroupNexus(UsersGroup usersGroup);

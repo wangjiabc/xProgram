@@ -46,6 +46,16 @@
 	 open_gid=#{openGId,jdbcType=VARCHAR}
 	</select> 
      
+     <select id="getParentOpenIdByGroupNexus" resultType="java.lang.Integer">
+	 select count(*)
+	 from
+	 user_group_nexus
+	 where
+	 open_gid=#{openGId,jdbcType=VARCHAR}
+	 and
+	 parent_open_gid=#{openId,jdbcType=VARCHAR}
+	 
+	</select> 
       
     <update id="updateTotal">
      update user_group_nexus
@@ -107,7 +117,10 @@
 	<insert id="insertGroupNexus" parameterType="com.xProgram.manage.model.UsersGroup">
 	   insert into user_group_nexus 
        <trim prefix="(" suffix=")" suffixOverrides=",">
-		  open_id,open_gid,
+		  open_id,
+		  <if test="openId!=null">
+		   open_gid,
+		  </if>
 		  is_share,
 		  <if test="parentOpenGid!=null">
 				parent_open_gid,
@@ -115,7 +128,9 @@
 	  </trim>
 	  <trim prefix="values (" suffix=")" suffixOverrides=",">
 	   #{openId,jdbcType=VARCHAR}, 
-	   #{openGId,jdbcType=VARCHAR}, 
+	   <if test="openId!=null">
+	    #{openGId,jdbcType=VARCHAR}, 
+	   </if>
 	   #{isShare,jdbcType=INTEGER}, 
 	   <if test="parentOpenGid!=null">
 		#{parentOpenGid,jdbcType=VARCHAR}, 

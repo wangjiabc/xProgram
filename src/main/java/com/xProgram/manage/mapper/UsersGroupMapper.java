@@ -11,6 +11,8 @@ public interface UsersGroupMapper {
 	
 	Integer getOpenIdByGroupNexus(Map<String, Object> map);
 	
+	Integer getParentOpenIdByGroupNexus(Map<String, Object> map);
+	
 	Integer updateTotal(Map<String, Object> map);
 	
 	Integer insertGroup(Map<String, Object> map);

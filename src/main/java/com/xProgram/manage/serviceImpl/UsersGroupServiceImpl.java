@@ -59,6 +59,11 @@ public class UsersGroupServiceImpl implements UsersGroupService{
 	}
 
 
+	@Override
+	public Integer getParentOpenIdByGroupNexus(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return usersGroupMapper.getParentOpenIdByGroupNexus(map);
+	}
 
 	@Override
 	public Integer updateTotal(Map<String, Object> map) {
