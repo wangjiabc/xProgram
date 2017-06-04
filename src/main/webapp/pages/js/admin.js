@@ -4,11 +4,13 @@ $('#auser').click(function(){
  });
 
 $('#auserGroup').click(function(){
+	alert("aaa");
 	   $('#content').load('pages/userGroup.html');
 	   $('#content').attr('src','pages/userGroup.html');
 	 });
 
 $('#auserAnalyse').click(function(){
+	alert("bbb");
 	   $('#content').load('pages/userAnalyse.html');
 	   $('#content').attr('src','pages/userAnalyse.html');
 	 });

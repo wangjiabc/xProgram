@@ -143,6 +143,8 @@ public class userGroupController {
 			 Integer isParentOpenId=
 						usersGroupService.getParentOpenIdByGroupNexus(groupMap);
 			 if(isParentOpenId.equals(0)){
+			   usersGroup.setIsShare(1);
+			   usersGroup.setOpenId(openId);
 			   usersGroup.setParentOpenGid(openGId);
 			   usersGroupService.insertGroupNexus(usersGroup);
 			 }
