@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xProgram.manage.mapper.UsersGroupMapper">
+	<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" />
+	<resultMap id="BaseResultMap" type="com.xProgram.manage.model.UsersGroup">
+	    <id column="id" property="id" jdbcType="INTEGER" />
+	    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+	    <result column="open_gid" property="openGid" jdbcType="VARCHAR" />
+	    <result column="campus_id" property="campusId" jdbcType="INTEGER" />
+	    <result column="is_share" property="isShare" jdbcType="INTEGER" />
+	    <result column="parent_open_gid" property="parentOpenGid" jdbcType="VARCHAR" />
+	    <result column="count" property="count" jdbcType="INTEGER" />
+	    <result column="city" property="city" jdbcType="VARCHAR" />
+	    <result column="country" property="country" jdbcType="VARCHAR" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+	    <result column="total_amount" property="totalAmount" jdbcType="REAL" />
+	    <result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="language" property="language" jdbcType="VARCHAR" />
+		<result column="nickname" property="nickname" jdbcType="VARCHAR" />
+		<result column="headimg_url" property="headImgUrl" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="SMALLINT" />
+		<result column="total_amount" property="totalAmount" jdbcType="REAL" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="phone" property="phone" jdbcType="VARCHAR" />
+	    <result column="address" property="address" jdbcType="VARCHAR" />	
+		<result column="default_address" property="defaultAddress"
+			jdbcType="SMALLINT" />	
+		<result column="rank" property="rank" jdbcType="VARCHAR" />	
+	  </resultMap>
+       
+    <select id="getAllUserGroup" resultMap="BaseResultMap" useCache="false">
+		select
+		users.id,users.open_id,
+		users.campus_id,nickname, headimg_url,
+		language,province,groupid,country,
+		city,sex,remark,
+		total_amount,
+		from user_group_nexus
+		left join users
+		on
+		users.open_id = usersinfo.open_id
+		<where>
+			users.campus_id=#{campusId,jdbcType=INTEGER}
+		<if test="search != null and search !='' ">
+				and (nickname like #{search,jdbcType=VARCHAR}
+			</if>
+			<if test="sort != null">
+				order by ${sort}
+			</if>
+			<if test="sort != null and order != null">
+				${order}
+			</if>
+		</where>
+		<if test="offset != null and limit != null">
+			limit #{offset,jdbcType=INTEGER} ,
+			#{limit,jdbcType=INTEGER}
+		</if>		
+	</select>    	  
+</mapper>
