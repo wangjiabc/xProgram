@@ -103,6 +103,7 @@ public class userGroupController {
 		    int campusId=1;
 		    Date currentTime=new Date();
 		    
+		    
 		    SNSUserInfo snsUserInfo=null;
 		    
 		    JSONObject jsonObject;
