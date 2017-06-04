@@ -206,6 +206,7 @@ public class userGroupController {
 		   
 		   Map<String, Object> resultMap=new HashMap<>();
 		   
+		   
 		   resultMap.put("rows", usersGroups);
 		   
 		   return resultMap;
