@@ -125,6 +125,9 @@
 		  <if test="parentOpenGid!=null">
 				parent_open_gid,
 		  </if>
+		  <if test="finallyTime!=null">
+		  finally_time
+		  </if>
 	  </trim>
 	  <trim prefix="values (" suffix=")" suffixOverrides=",">
 	   #{openId,jdbcType=VARCHAR}, 
@@ -135,6 +138,9 @@
 	   <if test="parentOpenGid!=null">
 		#{parentOpenGid,jdbcType=VARCHAR}, 
 	   </if>
+	   <if test="finallyTime!=null">
+		#{finallyTime,jdbcType=TIMESTAMP},
+		</if>
 	  </trim>
 	</insert>
 	   	  

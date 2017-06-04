@@ -48,6 +48,8 @@ public class UsersGroup {
     private Short defaultAddress;
     
     private String rank;
+    
+    private Date currentTime;
 	
     private Date createTime;
     
@@ -251,6 +253,14 @@ public class UsersGroup {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public Date getCurrentTime() {
+		return currentTime;
+	}
+
+	public void setCurrentTime(Date currentTime) {
+		this.currentTime = currentTime;
 	}
 
 	public Date getCreateTime() {
