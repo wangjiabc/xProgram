@@ -125,7 +125,7 @@
 		  <if test="parentOpenGid!=null">
 				parent_open_gid,
 		  </if>
-		  <if test="finallyTime!=null">
+		  <if test="currentTime!=null">
 		  finally_time
 		  </if>
 	  </trim>
@@ -138,7 +138,7 @@
 	   <if test="parentOpenGid!=null">
 		#{parentOpenGid,jdbcType=VARCHAR}, 
 	   </if>
-	   <if test="finallyTime!=null">
+	   <if test="currentTime!=null">
 		#{finallyTime,jdbcType=TIMESTAMP},
 		</if>
 	  </trim>

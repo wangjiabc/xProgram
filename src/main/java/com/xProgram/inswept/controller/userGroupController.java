@@ -125,7 +125,7 @@ public class userGroupController {
 			groupMap.put("openGId", openGId);
 		
 			UsersGroup usersGroup=new UsersGroup();   
-			usersGroup.setFinallyTime(currentTime);
+			usersGroup.setCurrentTime(currentTime);
 				
 		if(isTransmit){
 			Integer isOpenIdGId=usersGroupService.getOpenIdByGroupNexus(groupMap);
