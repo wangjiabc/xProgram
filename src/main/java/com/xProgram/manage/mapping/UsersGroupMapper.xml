@@ -22,15 +22,14 @@
 		<result column="total_amount" property="totalAmount" jdbcType="REAL" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
 	    <result column="phone" property="phone" jdbcType="VARCHAR" />
-	    <result column="address" property="address" jdbcType="VARCHAR" />	
-		<result column="default_address" property="defaultAddress"
-			jdbcType="SMALLINT" />	
+	    <result column="address" property="address" jdbcType="VARCHAR" />
 		<result column="rank" property="rank" jdbcType="VARCHAR" />	
 	  </resultMap>
+	  
        
     <select id="getAllUserGroup" resultMap="BaseResultMap" useCache="false">
 		select
-		users.id,users.open_id,
+		user_group_nexus.id,user_group_nexus.open_id,
 		users.campus_id,nickname, headimg_url,
 		language,province,groupid,country,
 		city,sex,remark,
@@ -56,6 +55,7 @@
 			#{limit,jdbcType=INTEGER}
 		</if>		
 	</select> 
+	
 	
 	<insert id="insertGroup">
 	   insert into user_group 

@@ -108,7 +108,7 @@ public class userGroupController {
 		    
 		    String openGId=jsonObject.getString("openGId");
 		    
-		//    insertGroup(openGId);
+		    insertGroup(openGId);
 			   
 			UsersGroup usersGroup=new UsersGroup();
 			   
