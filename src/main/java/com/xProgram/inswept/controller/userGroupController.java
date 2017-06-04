@@ -123,6 +123,7 @@ public class userGroupController {
 			Map<String, Object> groupMap=new HashMap<>();
 			groupMap.put("openId", openId);
 			groupMap.put("openGId", openGId);
+			groupMap.put("currentTime", currentTime);
 		
 			UsersGroup usersGroup=new UsersGroup();   
 			usersGroup.setCurrentTime(currentTime);
@@ -180,7 +181,7 @@ public class userGroupController {
 		UsersGroup usersGroup=new UsersGroup();   
 		usersGroup.setOpenId(openId);
 		usersGroup.setParentOpenGid(openGId);
-		usersGroup.setFinallyTime(currentTime);
+		usersGroup.setCurrentTime(currentTime);
 		
 		Integer isOpenIdGId=insertGroupNexus(usersGroup);
 		

@@ -139,7 +139,7 @@
 		#{parentOpenGid,jdbcType=VARCHAR}, 
 	   </if>
 	   <if test="currentTime!=null">
-		#{finallyTime,jdbcType=TIMESTAMP},
+		#{currentTime,jdbcType=TIMESTAMP},
 		</if>
 	  </trim>
 	</insert>
