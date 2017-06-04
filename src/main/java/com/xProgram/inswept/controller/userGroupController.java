@@ -192,7 +192,7 @@ public class userGroupController {
 	}
 	
 	@RequestMapping("/getAllUserGroup")
-	public @ResponseBody List<UsersGroup>
+	public @ResponseBody Map<String, Object>
 	getAllUserGroup(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
 		   int campusId=1;
@@ -203,8 +203,12 @@ public class userGroupController {
 		   map.put("campusId", campusId);
 		   
 		   usersGroups=usersGroupService.getAllUserGroup(map);
-		   		 
-		   return usersGroups;
+		   
+		   Map<String, Object> resultMap=new HashMap<>();
+		   
+		   resultMap.put("rows", usersGroups);
+		   
+		   return resultMap;
 		
 	}
 	
