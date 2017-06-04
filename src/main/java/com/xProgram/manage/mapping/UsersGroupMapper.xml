@@ -5,7 +5,7 @@
 	<resultMap id="BaseResultMap" type="com.xProgram.manage.model.UsersGroup">
 	    <id column="id" property="id" jdbcType="INTEGER" />
 	    <result column="open_id" property="openId" jdbcType="VARCHAR" />
-	    <result column="open_gid" property="openGid" jdbcType="VARCHAR" />
+	    <result column="open_gid" property="openGId" jdbcType="VARCHAR" />
 	    <result column="campus_id" property="campusId" jdbcType="INTEGER" />
 	    <result column="is_share" property="isShare" jdbcType="INTEGER" />
 	    <result column="parent_open_gid" property="parentOpenGid" jdbcType="VARCHAR" />
@@ -34,11 +34,11 @@
 		users.campus_id,nickname, headimg_url,
 		language,province,groupid,country,
 		city,sex,remark,
-		total_amount,
+		total_amount
 		from user_group_nexus
 		left join users
 		on
-		users.open_id = usersinfo.open_id
+		user_group_nexus.open_id=users.open_id 
 		<where>
 			users.campus_id=#{campusId,jdbcType=INTEGER}
 		<if test="search != null and search !='' ">
@@ -55,5 +55,35 @@
 			limit #{offset,jdbcType=INTEGER} ,
 			#{limit,jdbcType=INTEGER}
 		</if>		
-	</select>    	  
+	</select> 
+	
+	<insert id="insertGroup">
+	   insert into user_group 
+       <trim prefix="(" suffix=")" suffixOverrides=",">
+		  open_gid
+	  </trim>
+	  <trim prefix="values (" suffix=")" suffixOverrides=",">
+		#{openGId,jdbcType=VARCHAR}, 
+	  </trim>
+	</insert>
+	
+	<insert id="insertGroupNexus" parameterType="com.xProgram.manage.model.UsersGroup">
+	   insert into user_group_nexus 
+       <trim prefix="(" suffix=")" suffixOverrides=",">
+		  open_id,open_gid,
+		  is_share,
+		  <if test="parentOpenGid!=null">
+				parent_open_gid,
+		  </if>
+	  </trim>
+	  <trim prefix="values (" suffix=")" suffixOverrides=",">
+	   #{openId,jdbcType=VARCHAR}, 
+	   #{openGId,jdbcType=VARCHAR}, 
+	   #{isShare,jdbcType=INTEGER}, 
+	   <if test="parentOpenGid!=null">
+		#{parentOpenGid,jdbcType=VARCHAR}, 
+	   </if>
+	  </trim>
+	</insert>
+	   	  
 </mapper>

@@ -1,6 +1,7 @@
 package com.xProgram.manage.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -9,9 +10,11 @@ import com.xProgram.manage.model.UsersGroup;
 
 public interface UsersGroupMapper {
 	
-	Integer insert(UsersGroup usersGroup);
+	Integer insertGroup(Map<String, Object> map);
 	
-	List<UsersGroup> getAllUserGroup(@Param(value="limit")Integer limit, @Param(value="offset")Integer offset);
+	Integer insertGroupNexus(UsersGroup usersGroup);
+	
+	List<UsersGroup> getAllUserGroup(Map<String, Object> map);
 
 
 }

@@ -7,13 +7,13 @@ public class UsersGroup {
 	
 	private int isShare;
 	
-	private String openGid;
+	private String openGId;
 	
 	private String parentOpenGid;
 	
 	private int count;
 
-private float allConsume;
+    private float allConsume;
 	
 	private String language;
 	
@@ -47,6 +47,10 @@ private float allConsume;
     
     private String rank;
 	
+    public UsersGroup() {
+		// TODO Auto-generated constructor stub
+	}
+    
 	public int getId() {
 		return id;
 	}
@@ -71,12 +75,12 @@ private float allConsume;
 		this.isShare = isShare;
 	}
 
-	public String getOpenGid() {
-		return openGid;
+	public String getOpenGId() {
+		return openGId;
 	}
 
-	public void setOpenGid(String openGid) {
-		this.openGid = openGid;
+	public void setOpenGId(String openGId) {
+		this.openGId = openGId;
 	}
 
 	public String getParentOpenGid() {

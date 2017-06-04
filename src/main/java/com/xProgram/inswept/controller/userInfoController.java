@@ -33,8 +33,6 @@ public class userInfoController {
 	
 	private WxInfoService wxInfoService;
 	
-	private static String openId;
-	
 	public UserService getUserService() {
 		return userService;
 	}
@@ -187,8 +185,6 @@ public class userInfoController {
 
 			String openId=snsUserInfo.getOpenId();
 			
-			setOpenId(openId);
-			
 			insertUser(snsUserInfo, campusId, openId);
 			
 			list.add(jsonObject);
@@ -233,14 +229,6 @@ public class userInfoController {
 			}  
 		    
 	        return jsonObject.toString();
-	}
-
-	public static String getOpenId() {
-		return openId;
-	}
-
-	public void setOpenId(String openId) {
-		this.openId = openId;
 	}
 	
 }
