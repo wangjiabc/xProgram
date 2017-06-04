@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xProgram.manage.mapper.WxInfoMapper">
+	<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" />
+	<resultMap id="BaseResultMap" type="com.xProgram.manage.model.WxInfo">
+	  <result column="app_id" property="appId" jdbcType="VARCHAR" />
+	  <result column="app_secret" property="appSecret" jdbcType="VARCHAR" />
+	</resultMap>
+
+ <select id="getAppId" resultMap="BaseResultMap">
+     select app_id,app_secret from campus 
+     where
+     campus_id=#{campusId,jdbcType=INTEGER}
+    </select>
+    
+ </mapper>

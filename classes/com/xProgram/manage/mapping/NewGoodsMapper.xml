@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xProgram.manage.mapper.NewGoodsMapper">
+	<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>
+	<resultMap id="BaseResultMap" type="com.xProgram.manage.model.Items">
+	<id column="id" property="id" jdbcType="INTEGER" />
+	<id column="food_id" property="foodId" jdbcType="INTEGER" />
+	<id column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+	<result column="campus_id" property="campusId" jdbcType="INTEGER"/>
+	<result column="campus_name" property="campusName" jdbcType="VARCHAR" />
+	<result column="img_url" property="pic_url" jdbcType="VARCHAR" /> 
+	<result column="message" property="intro" jdbcType="VARCHAR" /> 
+	<result column="prime_cost" property="primeCost" jdbcType="REAL" />	
+	<result column="food_count" property="foodCount" jdbcType="INTEGER"/>
+	<result column="food_all_count" property="foodAllCount" jdbcType="INTEGER"/>
+	<result column="status" property="status" jdbcType="SMALLINT" />
+	<result column="start" property="start" jdbcType="SMALLINT" />
+	<result column="category_id" property="categoryId" jdbcType="INTEGER" />
+	<result column="type" property="type" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		food_id,food.campus_id,campus.campus_name,campus_admin,name,
+		food.message as message,
+	    price, img_url, modify_time,
+		prime_cost, 
+		food.status,start,food_flag,
+		food_count,food_all_count,
+		category_id
+	</sql>
+
+    	<select id="getAllGoods" resultMap="BaseResultMap" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from food left join campus on food.campus_id=campus.campus_id
+		where food.campus_id=#{campusId,jdbcType=INTEGER}
+		order
+		by modify_time desc
+		<if test="start!=null">
+		   limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+		</if>
+	</select>
+
+</mapper>

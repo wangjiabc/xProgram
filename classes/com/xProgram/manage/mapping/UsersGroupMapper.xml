@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xProgram.manage.mapper.UsersGroupMapper">
+	<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" />
+	<resultMap id="BaseResultMap" type="com.xProgram.manage.model.UsersGroup">
+	    <id column="id" property="id" jdbcType="INTEGER" />
+	    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+	    <result column="open_gid" property="openGId" jdbcType="VARCHAR" />
+	    <result column="campus_id" property="campusId" jdbcType="INTEGER" />
+	    <result column="is_share" property="isShare" jdbcType="INTEGER" />
+	    <result column="parent_open_gid" property="parentOpenGid" jdbcType="VARCHAR" />
+	    <result column="count" property="count" jdbcType="INTEGER" />
+	    <result column="city" property="city" jdbcType="VARCHAR" />
+	    <result column="country" property="country" jdbcType="VARCHAR" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+	    <result column="total_amount" property="totalAmount" jdbcType="REAL" />
+	    <result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="language" property="language" jdbcType="VARCHAR" />
+		<result column="nickname" property="nickname" jdbcType="VARCHAR" />
+		<result column="headimg_url" property="headImgUrl" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="SMALLINT" />
+		<result column="total_amount" property="totalAmount" jdbcType="REAL" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="phone" property="phone" jdbcType="VARCHAR" />
+	    <result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="rank" property="rank" jdbcType="VARCHAR" />	
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="finally_time" property="finallyTime" jdbcType="TIMESTAMP" />
+	  </resultMap>
+	  
+    <select id="getOpenGId" resultType="java.lang.Integer">
+	 select count(*)
+	 from
+	 user_group
+	 where
+	 open_gid=#{openGId,jdbcType=VARCHAR}
+	</select>
+	 
+    <select id="getOpenIdByGroupNexus" resultType="java.lang.Integer">
+	 select count(*)
+	 from
+	 user_group_nexus
+	 where
+	 open_id=#{openId,jdbcType=VARCHAR}
+	 and
+	 open_gid=#{openGId,jdbcType=VARCHAR}
+	</select> 
+     
+     <select id="getParentOpenIdByGroupNexus" resultType="java.lang.Integer">
+	 select count(*)
+	 from
+	 user_group_nexus
+	 where
+	 open_gid=#{openGId,jdbcType=VARCHAR}
+	 and
+	 parent_open_gid=#{openId,jdbcType=VARCHAR}
+	 
+	</select> 
+      
+    <update id="updateTotal">
+     update user_group_nexus
+     set
+     total=total+1,
+     finally_time=#{currentTime,jdbcType=TIMESTAMP}
+     where 
+     open_id=#{openId,jdbcType=VARCHAR}
+	 and
+	 open_gid=#{openGId,jdbcType=VARCHAR}
+    </update>
+       
+    <select id="getAllUserGroup" resultMap="BaseResultMap" useCache="false">
+		select
+		user_group_nexus.id,user_group_nexus.open_id,
+		users.campus_id,nickname, headimg_url,
+		language,province,groupid,country,
+		city,sex,remark,
+		total_amount
+		from user_group_nexus
+		left join users
+		on
+		user_group_nexus.open_id=users.open_id 
+		<where>
+			users.campus_id=#{campusId,jdbcType=INTEGER}
+		<if test="search != null and search !='' ">
+				and (nickname like #{search,jdbcType=VARCHAR}
+			</if>
+			<if test="sort != null">
+				order by ${sort}
+			</if>
+			<if test="sort != null and order != null">
+				${order}
+			</if>
+		</where>
+		<if test="offset != null and limit != null">
+			limit #{offset,jdbcType=INTEGER} ,
+			#{limit,jdbcType=INTEGER}
+		</if>		
+	</select> 
+	
+	
+	<insert id="insertGroup">
+	   insert into user_group 
+       <trim prefix="(" suffix=")" suffixOverrides=",">
+		  open_gid,
+		  <if test="currentTime!=null">
+		  create_time
+		  </if>
+	  </trim>
+	  <trim prefix="values (" suffix=")" suffixOverrides=",">
+		#{openGId,jdbcType=VARCHAR}, 
+		<if test="currentTime!=null">
+		#{currentTime,jdbcType=TIMESTAMP},
+		</if>
+	  </trim>
+	</insert>
+	
+	<insert id="insertGroupNexus" parameterType="com.xProgram.manage.model.UsersGroup">
+	   insert into user_group_nexus 
+       <trim prefix="(" suffix=")" suffixOverrides=",">
+		  open_id,
+		  <if test="openId!=null">
+		   open_gid,
+		  </if>
+		  is_share,
+		  <if test="parentOpenGid!=null">
+				parent_open_gid,
+		  </if>
+	  </trim>
+	  <trim prefix="values (" suffix=")" suffixOverrides=",">
+	   #{openId,jdbcType=VARCHAR}, 
+	   <if test="openId!=null">
+	    #{openGId,jdbcType=VARCHAR}, 
+	   </if>
+	   #{isShare,jdbcType=INTEGER}, 
+	   <if test="parentOpenGid!=null">
+		#{parentOpenGid,jdbcType=VARCHAR}, 
+	   </if>
+	  </trim>
+	</insert>
+	   	  
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xProgram.manage.mapper.FoodCategoryMapper" >
+ <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" />
+  <resultMap id="BaseResultMap" type="com.xProgram.manage.model.FoodCategory" >
+    <id column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="category" property="category" jdbcType="VARCHAR" />
+    <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="is_open" property="isOpen" jdbcType="SMALLINT"/>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    category_id, category, img_url,is_open
+  </sql>
+
+  <select id="getAllFoodCategories" resultMap="BaseResultMap" useCache="false">
+   select 
+    <include refid="Base_Column_List" />
+    from food_category 
+     <if test="limit != null and offset!=null">
+        LIMIT #{limit,jdbcType=INTEGER} OFFSET #{offset,jdbcType=INTEGER}
+    </if>
+    
+  </select>
+  
+</mapper>
