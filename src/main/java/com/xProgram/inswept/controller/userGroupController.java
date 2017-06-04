@@ -117,21 +117,21 @@ public class userGroupController {
 		    
 		    Integer isOpenGId=usersGroupService.getOpenGId(gidMap);
 		    if(isOpenGId.equals(0))
-		     insertGroup(openGId);   //写入群id
+		     insertGroup(gidMap);   //写入群id
 			   			
 			
 			Map<String, Object> groupMap=new HashMap<>();
 			groupMap.put("openId", openId);
 			groupMap.put("openGId", openGId);
-			
-			Integer isOpenIdGId=usersGroupService.getOpenIdByGroupNexus(groupMap);
-			
+		
 			UsersGroup usersGroup=new UsersGroup();   
 			usersGroup.setFinallyTime(currentTime);
 				
 		if(isTransmit){
+			Integer isOpenIdGId=usersGroupService.getOpenIdByGroupNexus(groupMap);
 		  if(isOpenIdGId.equals(0)){
 			  usersGroup.setIsShare(0);
+			  usersGroup.setOpenId(openId);
 			  usersGroup.setOpenGId(openGId);
 			  insertGroupNexus(usersGroup);
 			}else {
@@ -159,8 +159,9 @@ public class userGroupController {
 	}
 	
 	@RequestMapping("/test")
-	public @ResponseBody String
-	testController(HttpServletRequest request, HttpServletResponse response){
+	public @ResponseBody boolean
+	testController(HttpServletRequest request, HttpServletResponse response
+			,@RequestParam boolean isTransmit){
 		Map<String, Object> gidMap=new HashMap<>();
 	    gidMap.put("openGId", "aaa");
 	    
@@ -183,7 +184,7 @@ public class userGroupController {
 		
 		Integer isOpenIdGId=insertGroupNexus(usersGroup);
 		
-	    return isOpenIdGId.toString();
+	    return isTransmit;
 	}
 	
 	@RequestMapping("/getAllUserGroup")
@@ -204,10 +205,7 @@ public class userGroupController {
 	}
 	
 	private Integer 
-	insertGroup(String openGId){
-		Map<String, Object> map=new HashMap<>();
-		
-		map.put("openGId", openGId);
+	insertGroup(Map<String, Object> map){
 		
 		int i=usersGroupService.insertGroup(map);
 		
