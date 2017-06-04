@@ -1,6 +1,7 @@
 package com.xProgram.inswept.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xProgram.manage.controller.testController;
 import com.xProgram.manage.model.SNSUserInfo;
 import com.xProgram.manage.model.UsersGroup;
 import com.xProgram.manage.model.WxInfo;
@@ -99,7 +101,8 @@ public class userGroupController {
 			@RequestParam boolean isTransmit)
 			throws ServletException, IOException {
 		    int campusId=1;
-
+		    Date currentTime=new Date();
+		    
 		    SNSUserInfo snsUserInfo=null;
 		    
 		    JSONObject jsonObject;
@@ -108,12 +111,25 @@ public class userGroupController {
 		    
 		    String openGId=jsonObject.getString("openGId");
 		    
-		    insertGroup(openGId);
-			   
-			UsersGroup usersGroup=new UsersGroup();
-			   
-			usersGroup.setOpenId(openId);
+		    Map<String, Object> gidMap=new HashMap<>();
+		    gidMap.put("openGId", openGId);
+		    
+		    Integer isOpenGId=usersGroupService.getOpenGId(gidMap);
+		    if(isOpenGId.equals(0))
+		     insertGroup(openGId);   //–¥»Î»∫id
+			   			
 			
+			Map<String, Object> groupMap=new HashMap<>();
+			groupMap.put("openId", openId);
+			groupMap.put("openGId", openGId);
+			
+			Integer isOpenIdGId=usersGroupService.getOpenIdByGroupNexus(groupMap);
+			
+			UsersGroup usersGroup=new UsersGroup();   
+			usersGroup.setOpenId(openId);
+			usersGroup.setFinallyTime(currentTime);
+			
+		if(isOpenIdGId.equals(0)){
 			if(isTransmit){
 			  usersGroup.setIsShare(0);
 			  usersGroup.setOpenGId(openGId);
@@ -121,10 +137,45 @@ public class userGroupController {
 				usersGroup.setIsShare(1);
 				usersGroup.setParentOpenGid(openGId);
 			}
-			   
-			insertGroupNexus(usersGroup);
+		 }else {
+			Map<String, Object> add=new HashMap<>();
+			add.put("openId", openId);
+			add.put("openGId", openGId);
+			add.put("currentTime", currentTime);
+			usersGroupService.updateTotal(add);
+		  }	   
+			
+		    insertGroupNexus(usersGroup);
 	    
 		    return jsonObject.toString();
+	}
+	
+	@RequestMapping("/test")
+	public @ResponseBody String
+	testController(HttpServletRequest request, HttpServletResponse response){
+		Map<String, Object> gidMap=new HashMap<>();
+	    gidMap.put("openGId", "aaa");
+	    
+	    Integer isOpenGId=usersGroupService.getOpenGId(gidMap);
+	    
+	    Map<String, Object> groupMap=new HashMap<>();
+		String openId="yyyy";
+		String openGId="oooo";
+		
+		Map<String, Object> add=new HashMap<>();
+		add.put("openId", openId);
+		add.put("openGId", openGId);
+		Date currentTime=new Date();
+		add.put("currentTime", currentTime);
+		
+		UsersGroup usersGroup=new UsersGroup();   
+		usersGroup.setOpenId(openId);
+		usersGroup.setParentOpenGid(openGId);
+		usersGroup.setFinallyTime(currentTime);
+		
+		Integer isOpenIdGId=insertGroupNexus(usersGroup);
+		
+	    return isOpenIdGId.toString();
 	}
 	
 	@RequestMapping("/getAllUserGroup")

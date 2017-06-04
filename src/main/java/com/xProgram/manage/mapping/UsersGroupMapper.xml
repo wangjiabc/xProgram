@@ -24,8 +24,39 @@
 	    <result column="phone" property="phone" jdbcType="VARCHAR" />
 	    <result column="address" property="address" jdbcType="VARCHAR" />
 		<result column="rank" property="rank" jdbcType="VARCHAR" />	
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="finally_time" property="finallyTime" jdbcType="TIMESTAMP" />
 	  </resultMap>
 	  
+    <select id="getOpenGId" resultType="java.lang.Integer">
+	 select count(*)
+	 from
+	 user_group
+	 where
+	 open_gid=#{openGId,jdbcType=VARCHAR}
+	</select>
+	 
+    <select id="getOpenIdByGroupNexus" resultType="java.lang.Integer">
+	 select count(*)
+	 from
+	 user_group_nexus
+	 where
+	 open_id=#{openId,jdbcType=VARCHAR}
+	 and
+	 open_gid=#{openGId,jdbcType=VARCHAR}
+	</select> 
+     
+      
+    <update id="updateTotal">
+     update user_group_nexus
+     set
+     total=total+1,
+     finally_time=#{currentTime,jdbcType=TIMESTAMP}
+     where 
+     open_id=#{openId,jdbcType=VARCHAR}
+	 and
+	 open_gid=#{openGId,jdbcType=VARCHAR}
+    </update>
        
     <select id="getAllUserGroup" resultMap="BaseResultMap" useCache="false">
 		select
@@ -60,10 +91,16 @@
 	<insert id="insertGroup">
 	   insert into user_group 
        <trim prefix="(" suffix=")" suffixOverrides=",">
-		  open_gid
+		  open_gid,
+		  <if test="currentTime!=null">
+		  create_time
+		  </if>
 	  </trim>
 	  <trim prefix="values (" suffix=")" suffixOverrides=",">
 		#{openGId,jdbcType=VARCHAR}, 
+		<if test="currentTime!=null">
+		#{currentTime,jdbcType=TIMESTAMP},
+		</if>
 	  </trim>
 	</insert>
 	

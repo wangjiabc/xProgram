@@ -1,5 +1,7 @@
 package com.xProgram.manage.model;
 
+import java.util.Date;
+
 public class UsersGroup {
     private int id;
 	
@@ -47,6 +49,10 @@ public class UsersGroup {
     
     private String rank;
 	
+    private Date createTime;
+    
+    private Date finallyTime;
+    
     public UsersGroup() {
 		// TODO Auto-generated constructor stub
 	}
@@ -246,4 +252,22 @@ public class UsersGroup {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getFinallyTime() {
+		return finallyTime;
+	}
+
+	public void setFinallyTime(Date finallyTime) {
+		this.finallyTime = finallyTime;
+	}
+
+	
 }
