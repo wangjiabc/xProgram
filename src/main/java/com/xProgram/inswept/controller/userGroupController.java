@@ -97,7 +97,6 @@ public class userGroupController {
 	getGroupInfo(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam String jsCode,@RequestParam String iv,
 			@RequestParam String encryptedData,
-			@RequestParam String openId,
 			@RequestParam boolean isTransmit)
 			throws ServletException, IOException {
 		    int campusId=1;
@@ -109,6 +108,8 @@ public class userGroupController {
 
 		    jsonObject=getWxInfo(jsCode, iv, encryptedData);
 		    
+		    
+		    String openId=jsonObject.getString("openId");
 		    String openGId=jsonObject.getString("openGId");
 		    
 		    Map<String, Object> gidMap=new HashMap<>();
