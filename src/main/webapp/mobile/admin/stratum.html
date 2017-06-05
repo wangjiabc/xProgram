@@ -4,82 +4,6 @@
 <head>
 <title>Weixin后台管理</title>
 
-
- <script type="text/javascript">
-	if(typeof(EventSource) !== "undefined") {
-		 var evtSource = new EventSource("/xProgram/sse");
-         var alertdialog=document.getElementById("alertdialog");
-         var alertchar=document.getElementById("alertchar");
-		 evtSource.addEventListener("ping", function(e){
-			var obj = JSON.parse(e.data);
-			 $("#mask").attr("style","display:none");
-			 $("#weui_actionsheet").removeClass("weui_actionsheet_toggle");
-			 $("#dialog1").attr("style","display:block");
-			 $("#affirmBody").html(
-					 "<img src='"+obj.imgUrl+"' width='44px' height='44px' style='border-radius:50%;'>"+
-					 "<br />昵称 : "+obj.nickName+
-					 "<br />订单号 : "+obj.id+
-					 "<br />商品号 : "+obj.foodId+
-					 "<br />商品名称 : "+obj.campusName+
-					 "<br />商品数量 : "+obj.amount+
-					 "<br />所属商家 : "+obj.campusAdmin
-					 );
-		     
-		     if(obj.j>50){
-		    	 $("#dialog1").attr("style","display:none");
-		     }
-		     
-		 	$(".primary").on("click",function(){
-		 		$.ajax({
-					url: "/xProgram/consumemanage/commit.do",
-					type: "post",
-					data:{campusAdmin:obj.campusAdmin,campusId:obj.campusId,
-                          openId:obj.openId,id:obj.id},
-					dataType:'json',
-					success:function(data){
-						$("#dialog1").attr("style","display:none");
-						if(data==1){							
-							$('#toast').show();
-						     setTimeout(function () {
-						         $('#toast').hide();
-						     }, 2000);
-						  }else{
-							alert("确认失败");
-						 }
-					}
-				});
-			});
-			
-		     
-		     $(".default").on("click",function(){
-		    	 $.post("/xProgram/consumemanage/cancel.do", {
-		             campusAdmin:obj.campusAdmin,
-		             keyCode:obj.keyCode
-		    	}, function(data) {
-		    		$("#dialog1").attr("style","display:none");
-		    	});
-		     });
-		     
-		    console.log(obj.campusAdmin+"  "+e.data);
-		  }, false);
-
-		  evtSource.addEventListener("open", function(e) {
-		    // Connection was opened.
-			 console.log("sse open");
-		  }, false);
-
-		  evtSource.addEventListener("error", function(e) {
-		  }, false);
-		  
-		  evtSource.addEventListener("close", function(e) {
-		      
-			  }, false);
-		  
-		} else {
-			 alert("您的浏览器不支持的EventSource,请更换浏览器");
-	}
-	
-</script>
  
 
 <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -188,21 +112,6 @@
 			<div class='container-fluid'>
 				<a class='brand pull-left' ><img src="../../img/icon.png" width="20px" height="auto">&nbsp;
 				</a><a  class='brand pull-left' id="brand">For</a>
-				<ul class='nav pull-right'>
-					<li>
-						<!-- 添加校区下拉菜单 -->
-						<div class="dropdown" id="campusDropdown">
-							<button type="button" class="btn dropdown-toggle"
-								id="dropdownMenu1" data-toggle="dropdown">
-								<span class="change">选择公众号</span> <span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" id="dropdown-campus"
-							  style="height: 200px; overflow: auto">
-
-							</ul>
-						</div>
-					</li>
-				</ul>
 			</div>
 		</div>
 		
@@ -239,7 +148,7 @@
          </div>
        </div>
    </div>
- 
+ <!--  
   <div id="toolbar" class="btn-group">
 					<button id="addFoodCountBtn" type="button" class="btn btn-default">
 						添加库存
@@ -249,8 +158,8 @@
 						二维码
 					</button>			 
    </div>
-   
-			
+   -->
+	<!--  	
 		<div id="maintable">
 			      <table id="table" data-id-field="foodId" data-striped="true"
 					data-toolbar="#toolbar"
@@ -276,8 +185,8 @@
 					</thead>
 				</table>
 		</div>
- 
- 	<!-- 添加库存modal start -->
+ -->
+ 	<!-- 添加库存modal start 
 	<div class="modal fade" id="addFoodCountModal" tabindex="-1" role="dialog" aria-labelledby="addFoodCountModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -333,10 +242,48 @@
 					</script>
 				</form>
 				
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal -->
+			</div>
+		</div> 
 	</div>
+	-->
 	<!-- 添加库存modal end -->
+ 
+ 	<div class="container">
+		<div class="page-header">
+			<h1>用戶关系&nbsp;&nbsp;</h1>
+		</div>
+		<div style="text-align: center;">
+			<span id="operate-success">设置成功</span>
+		</div>
+		<div>
+			<table id="table" data-toggle="table" data-show-export="false"
+				data-url="../../insweptUserGroup/getAllUserGroup.do" data-search="true"
+				data-show-refresh="true" data-show-toggle="true"
+				data-side-pagination="server" data-pagination="true"
+				data-show-columns="true">
+				<thead>
+					<tr>
+						<!-- <th data-field="state" data-checkbox="true"></th> -->
+						
+						<th data-field="nickname">昵称</th>
+						<th data-field="imgUrl">头像</th>						
+						<th data-field="openId">OpenId</th>
+						<th data-field="openGId">群ID</th>
+						<th data-field="total">转发次数</th>
+						<th data-field="isShare">来源</th>
+						<th data-field="finallyTime" data-sortable="true">最后登陆时间</th>
+						<th data-field="sex">性别</th>
+						<th data-field="phone">手机号</th>
+						<th data-field="country" data-visible="false">国家</th>
+						<th data-field="province" >省份</th>
+						<th data-field="city" >城市</th>
+						<th data-field="groupId" data-visible="false">分组ID</th>
+						<th data-field="defaultAddress" data-visible="false">默认地址</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
  
 </body>
 <style type="text/css">  <!--避免bootstrap框架窗口变化造成元素高度的变化 -->
@@ -402,15 +349,5 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cc0956ae', e
 
 </style>
 
-<script type="text/javascript">
- var u = navigator.userAgent;
- var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
- var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
- if(isAndroid||isiOS){
-
- }else{
-	 location.href="../../admin.html";
- }
-</script>
 <script type="text/javascript" src="admin.js"></script>
 </html>
