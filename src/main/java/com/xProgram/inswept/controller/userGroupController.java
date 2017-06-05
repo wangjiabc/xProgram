@@ -103,6 +103,8 @@ public class userGroupController {
 		    int campusId=1;
 		    Date currentTime=new Date();
 		    
+		    if(openId.equals(""))
+		    	return null;
 		    
 		    SNSUserInfo snsUserInfo=null;
 		    
@@ -193,24 +195,83 @@ public class userGroupController {
 	
 	@RequestMapping("/getAllUserGroup")
 	public @ResponseBody Map<String, Object>
-	getAllUserGroup(HttpServletRequest request, HttpServletResponse response)
+	getAllUserGroup(HttpServletRequest request, HttpServletResponse response,
+			Integer limit,Integer offset,String sort,String order,
+			String search)
 			throws ServletException, IOException{
 		   int campusId=1;
 		   Map<String,Object> map=new HashMap<>();
 		   
 		   List<UsersGroup> usersGroups;
 		   
-		   map.put("campusId", campusId);
+		   /*
+			 * 前端的user表与其它表不一样，必须指定查询参数，否则抛出sql异常
+			 * 默认按id降序排列
+			 */
+			if(sort==null){
+				sort="id";
+				order="desc";
+			}
+			
+			Map<String, Object> map2=new HashMap<>();
+ 			
+			if(search!=null&&!search.trim().equals("")){
+				search="%"+search+"%";
+				map2.put("search", search);
+			}		
+
 		   
-		   usersGroups=usersGroupService.getAllUserGroup(map);
+		   usersGroups=usersGroupService.getAllUserGroup(map,campusId,limit,offset,sort,order,search);
 		   
 		   Map<String, Object> resultMap=new HashMap<>();
 		   
 		   
 		   resultMap.put("rows", usersGroups);
+
+		   resultMap.put("total", usersGroupService.getUserGroupCount(map2));
 		   
 		   return resultMap;
 		
+	}
+	
+	
+	@RequestMapping("/getAllGroup")
+	public @ResponseBody Map<String, Object>
+	getAllGroup(HttpServletRequest request, HttpServletResponse response,
+			Integer limit,Integer offset,String sort,String order,
+			String search)
+			throws ServletException, IOException{
+		int campusId=1;
+		   Map<String,Object> map=new HashMap<>();
+		   
+		   List<UsersGroup> usersGroups;
+		
+		   /*
+			 * 前端的user表与其它表不一样，必须指定查询参数，否则抛出sql异常
+			 * 默认按id降序排列
+			 */
+			if(sort==null){
+				sort="id";
+				order="desc";
+			}
+			
+			Map<String, Object> map2=new HashMap<>();
+			
+			if(search!=null&&!search.trim().equals("")){
+				search="%"+search+"%";
+				map2.put("search", search);
+			}		
+			
+		   
+          usersGroups=usersGroupService.getAllGroup(map,campusId,limit,offset,sort,order,search);
+		   
+		   Map<String, Object> resultMap=new HashMap<>();
+		   
+		   
+		   resultMap.put("rows", usersGroups);
+		   resultMap.put("total", usersGroupService.getGroupCount(map2));
+		   		   
+		   return resultMap;
 	}
 	
 	private Integer 

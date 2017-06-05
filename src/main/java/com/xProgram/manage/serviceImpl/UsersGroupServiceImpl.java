@@ -21,11 +21,6 @@ public class UsersGroupServiceImpl implements UsersGroupService{
 
 	
 
-	@Override
-	public List<UsersGroup> getAllUserGroup(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return usersGroupMapper.getAllUserGroup(map);
-	}
 
 
 
@@ -72,5 +67,38 @@ public class UsersGroupServiceImpl implements UsersGroupService{
 	}
 
 
+
+	@Override
+	public List<UsersGroup> getAllGroup(Map<String, Object> map,Integer campusId,Integer limit, Integer offset, String sort,
+			String order,String search) {
+		// TODO Auto-generated method stub
+		return usersGroupMapper.getAllGroup(map,campusId,limit,offset,sort,order,search);
+	}
+
+
+	@Override
+	public List<UsersGroup> getAllUserGroup(Map<String, Object> map,Integer campusId,Integer limit, Integer offset, String sort,
+			String order,String search) {
+		// TODO Auto-generated method stub
+		return usersGroupMapper.getAllUserGroup(map,campusId,limit,offset,sort,order,search);
+	}
+
+
+
+	@Override
+	public Integer getGroupCount(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return usersGroupMapper.getGroupCount(map);
+	}
+
+
+
+	@Override
+	public Integer getUserGroupCount(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return usersGroupMapper.getUserGroupCount(map);
+	}
+
+	
 
 }

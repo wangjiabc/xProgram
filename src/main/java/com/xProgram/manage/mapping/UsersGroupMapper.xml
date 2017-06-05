@@ -6,6 +6,7 @@
 	    <id column="id" property="id" jdbcType="INTEGER" />
 	    <result column="open_id" property="openId" jdbcType="VARCHAR" />
 	    <result column="open_gid" property="openGId" jdbcType="VARCHAR" />
+	    <result column="total" property="total" jdbcType="INTEGER" />
 	    <result column="campus_id" property="campusId" jdbcType="INTEGER" />
 	    <result column="is_share" property="isShare" jdbcType="INTEGER" />
 	    <result column="parent_open_gid" property="parentOpenGid" jdbcType="VARCHAR" />
@@ -67,10 +68,45 @@
 	 and
 	 open_gid=#{openGId,jdbcType=VARCHAR}
     </update>
-       
+    
+    <select id="getAllGroup" resultMap="BaseResultMap" useCache="false">
+    select id,open_gid,
+    create_time
+    from 
+    user_group
+
+		<if test="search != null and search !='' ">
+		 where open_gid like #{search,jdbcType=VARCHAR} 
+		</if>
+			<if test="sort != null">
+				order by ${sort}
+			</if>
+		<if test="sort != null and order != null">
+				${order}
+		</if>
+
+		<if test="offset != null and limit != null">
+			limit #{offset,jdbcType=INTEGER} ,
+			#{limit,jdbcType=INTEGER}
+		</if>		
+    </select>
+     
+     <select id="getGroupCount" resultType="Integer" useCache="false">
+		select
+		count("*")
+		from
+		user_group
+			<if test="search != null and search !='' ">
+			   where open_gid like #{search,jdbcType=VARCHAR} 
+			</if>
+
+	</select>
+      
     <select id="getAllUserGroup" resultMap="BaseResultMap" useCache="false">
 		select
 		user_group_nexus.id,user_group_nexus.open_id,
+		user_group_nexus.open_gid,user_group_nexus.total,
+		user_group_nexus.finally_time,
 		users.campus_id,nickname, headimg_url,
 		language,province,groupid,country,
 		city,sex,remark,
@@ -79,23 +115,36 @@
 		left join users
 		on
 		user_group_nexus.open_id=users.open_id 
-		<where>
 		<if test="search != null and search !='' ">
-				and (nickname like #{search,jdbcType=VARCHAR}
-			</if>
+			   where (users.nickname like #{search,jdbcType=VARCHAR} or user_group_nexus.open_id like
+				#{search,jdbcType=VARCHAR} or user_group_nexus.open_gid like #{search,jdbcType=VARCHAR})
+		</if>
 			<if test="sort != null">
 				order by ${sort}
 			</if>
-			<if test="sort != null and order != null">
+		<if test="sort != null and order != null">
 				${order}
-			</if>
-		</where>
+		</if>
+
 		<if test="offset != null and limit != null">
 			limit #{offset,jdbcType=INTEGER} ,
 			#{limit,jdbcType=INTEGER}
 		</if>		
 	</select> 
 	
+	 <select id="getUserGroupCount" resultType="Integer" useCache="false">
+		select
+		count("*")
+		from
+	    user_group_nexus
+		left join users
+		on
+		user_group_nexus.open_id=users.open_id 
+			<if test="search != null and search !='' ">
+			   where (users.nickname like #{search,jdbcType=VARCHAR} or user_group_nexus.open_id like
+				#{search,jdbcType=VARCHAR} or user_group_nexus.open_gid like #{search,jdbcType=VARCHAR}) 
+			</if>
+	</select>
 	
 	<insert id="insertGroup">
 	   insert into user_group 

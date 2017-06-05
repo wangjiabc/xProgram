@@ -13,6 +13,8 @@ public class UsersGroup {
 	
 	private String parentOpenGid;
 	
+	private int total;
+	
 	private int count;
 
     private float allConsume;
@@ -277,6 +279,14 @@ public class UsersGroup {
 
 	public void setFinallyTime(Date finallyTime) {
 		this.finallyTime = finallyTime;
+	}
+
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
 	}
 
 	
