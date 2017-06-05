@@ -5,7 +5,8 @@ var u = navigator.userAgent;
 var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android÷’∂À
 var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios÷’∂À
 if(isAndroid||isiOS){
-	location.href="../mobile/admin/index.html";
+	//location.href="../mobile/admin/index.html";
+	location.href="../admin.html";
 }else{
 	location.href="../admin.html";
 }

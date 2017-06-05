@@ -146,7 +146,7 @@ public class userGroupController {
 			 if(isParentOpenId.equals(0)){
 			   usersGroup.setIsShare(1);
 			   usersGroup.setOpenId(openId);
-			   usersGroup.setParentOpenGid(openGId);
+			   usersGroup.setOpenGId(openGId);
 			   usersGroupService.insertGroupNexus(usersGroup);
 			 }
 		 }else {
