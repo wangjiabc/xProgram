@@ -79,7 +79,7 @@
     
     
     <select id="getAllGroup" resultMap="BaseResultMap" useCache="false">
-    select id,open_gid,
+    select id,count,open_gid,
     create_time
     from 
     user_group
