@@ -166,9 +166,9 @@ public class userGroupController {
 	}
 	
 	@RequestMapping("/test")
-	public @ResponseBody boolean
+	public @ResponseBody Integer
 	testController(HttpServletRequest request, HttpServletResponse response
-			,@RequestParam boolean isTransmit){
+			){
 		Map<String, Object> gidMap=new HashMap<>();
 	    gidMap.put("openGId", "aaa");
 	    
@@ -189,9 +189,10 @@ public class userGroupController {
 		usersGroup.setParentOpenGid(openGId);
 		usersGroup.setCurrentTime(currentTime);
 		
-		Integer isOpenIdGId=usersGroupService.insertGroupNexus(usersGroup);
+		Integer isOpenIdGId=usersGroupService.upGroupCount(gidMap); 
 		
-	    return isTransmit;
+		
+	    return isOpenIdGId;
 	}
 	
 	@RequestMapping("/getAllUserGroup")

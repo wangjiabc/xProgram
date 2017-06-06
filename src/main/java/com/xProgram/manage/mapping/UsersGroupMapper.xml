@@ -72,7 +72,7 @@
     <update id="upGroupCount">
      update user_group
      set
-     count=count+1,
+     count=count+1
      where 
 	 open_gid=#{openGId,jdbcType=VARCHAR}
     </update>
