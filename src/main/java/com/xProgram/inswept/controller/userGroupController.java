@@ -120,7 +120,7 @@ public class userGroupController {
 		    
 		    Integer isOpenGId=usersGroupService.getOpenGId(gidMap);
 		    if(isOpenGId.equals(0))
-		     insertGroup(gidMap);   //写入群id
+		     usersGroupService.insertGroup(gidMap);   //写入群id
 			   			
 			
 			Map<String, Object> groupMap=new HashMap<>();
@@ -130,26 +130,27 @@ public class userGroupController {
 		
 			UsersGroup usersGroup=new UsersGroup();   
 			usersGroup.setCurrentTime(currentTime);
-				
-		if(isTransmit){
-			Integer isOpenIdGId=usersGroupService.getOpenIdByGroupNexus(groupMap);
+		
+		Integer isOpenIdGId=usersGroupService.getOpenIdByGroupNexus(groupMap);	
+		
+		if(isTransmit){			
 		  if(isOpenIdGId.equals(0)){
 			  usersGroup.setIsShare(0);
 			  usersGroup.setOpenId(openId);
 			  usersGroup.setOpenGId(openGId);
-			  insertGroupNexus(usersGroup);
+			  usersGroupService.insertGroupNexus(usersGroup); //写入转发
+			  usersGroupService.upGroupCount(gidMap);         //增加群人数
 			}else {
 				usersGroup.setIsShare(1);
-				usersGroupService.updateTotal(groupMap);
+				usersGroupService.updateTotal(groupMap);     //增加转发数
 			}
 		 }else if(!isTransmit){
-			 Integer isParentOpenId=
-						usersGroupService.getParentOpenIdByGroupNexus(groupMap);
-			 if(isParentOpenId.equals(0)){
+			 if(isOpenIdGId.equals(0)){
 			   usersGroup.setIsShare(1);
 			   usersGroup.setOpenId(openId);
 			   usersGroup.setOpenGId(openGId);
-			   usersGroupService.insertGroupNexus(usersGroup);
+			   usersGroupService.insertGroupNexus(usersGroup); //写入不转发
+			   usersGroupService.upGroupCount(gidMap);         //增加群人数
 			 }
 		 }else {
 			Map<String, Object> add=new HashMap<>();
@@ -188,7 +189,7 @@ public class userGroupController {
 		usersGroup.setParentOpenGid(openGId);
 		usersGroup.setCurrentTime(currentTime);
 		
-		Integer isOpenIdGId=insertGroupNexus(usersGroup);
+		Integer isOpenIdGId=usersGroupService.insertGroupNexus(usersGroup);
 		
 	    return isTransmit;
 	}
@@ -274,19 +275,4 @@ public class userGroupController {
 		   return resultMap;
 	}
 	
-	private Integer 
-	insertGroup(Map<String, Object> map){
-		
-		int i=usersGroupService.insertGroup(map);
-		
-		return i;
-		
-	}
-	
-	private Integer
-	insertGroupNexus(UsersGroup usersGroup){
-		int i=usersGroupService.insertGroupNexus(usersGroup);
-		
-		return i;
-	}
 }

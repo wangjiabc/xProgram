@@ -69,6 +69,15 @@
 	 open_gid=#{openGId,jdbcType=VARCHAR}
     </update>
     
+    <update id="upGroupCount">
+     update user_group
+     set
+     count=count+1,
+     where 
+	 open_gid=#{openGId,jdbcType=VARCHAR}
+    </update>
+    
+    
     <select id="getAllGroup" resultMap="BaseResultMap" useCache="false">
     select id,open_gid,
     create_time

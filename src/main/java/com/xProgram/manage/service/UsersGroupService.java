@@ -12,6 +12,8 @@ public interface UsersGroupService {
     Integer getOpenGId(Map<String, Object> map);
 	
     Integer updateTotal(Map<String, Object> map);
+    
+    Integer upGroupCount(Map<String, Object> map);
 	
 	Integer getOpenIdByGroupNexus(Map<String, Object> map);
 	

@@ -99,6 +99,17 @@ public class UsersGroupServiceImpl implements UsersGroupService{
 		return usersGroupMapper.getUserGroupCount(map);
 	}
 
+
+
+
+
+
+	@Override
+	public Integer upGroupCount(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return usersGroupMapper.upGroupCount(map);
+	}
+
 	
 
 }

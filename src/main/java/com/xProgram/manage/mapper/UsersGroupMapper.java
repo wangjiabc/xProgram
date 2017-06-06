@@ -17,6 +17,8 @@ public interface UsersGroupMapper {
 	
 	Integer updateTotal(Map<String, Object> map);
 	
+	Integer upGroupCount(Map<String, Object> map);
+	
 	Integer insertGroup(Map<String, Object> map);
 	
 	Integer insertGroupNexus(UsersGroup usersGroup);
