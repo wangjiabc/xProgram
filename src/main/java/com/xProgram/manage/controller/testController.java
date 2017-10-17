@@ -2,7 +2,9 @@ package com.xProgram.manage.controller;
 
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xProgram.manage.redis.Orders;
+import com.xProgram.manage.redis.RedisDao;
 import com.xProgram.manage.model.Affair;
 import com.xProgram.manage.service.AffairService;
 import com.xProgram.manage.service.FoodService;
@@ -44,6 +48,13 @@ public class testController {
 		this.testService=testService;
 	}
 	
+   private RedisDao orderDao;
+ 	
+ 	@Autowired
+ 	public void setOrderDao(RedisDao orderDao) {
+ 		this.orderDao = orderDao;
+ 	}
+ 	
 	
 	@RequestMapping("/aaa")
 	public @ResponseBody
@@ -96,4 +107,49 @@ public class testController {
 		return i;
 	}
 
+	@RequestMapping("save")
+	public @ResponseBody String save(@RequestParam String id,@RequestParam 
+			String name){
+		Orders order=new Orders();
+		order.setId(id);
+		order.setName(name);
+		
+		orderDao.save(order);
+		
+		return "1";
+		
+	}
+	
+	@RequestMapping("read")
+	public @ResponseBody String read(@RequestParam String id){
+		Orders order= (Orders) orderDao.read(id);
+		
+		return order.getName();
+	}
+	
+	@RequestMapping("getAll")
+	public @ResponseBody Map getAll(){
+		Map<String, Object> map=new HashMap();
+		Set set= orderDao.getAll();
+		Iterator<String> iterator=set.iterator();
+		while (iterator.hasNext()) {
+			String key=iterator.next();
+			Orders order=(Orders) orderDao.read(key);
+			map.put(key, order);			
+		}
+		return map;
+	}
+	
+	@RequestMapping("del")
+	public @ResponseBody Integer del(@RequestParam String id){
+		orderDao.delete(id);
+		return 1;
+	}
+	
+	@RequestMapping("delAll")
+	public @ResponseBody Set delAll(){
+		Set set= orderDao.getAll();
+		orderDao.deleteAll();
+		return set;
+	}
 }

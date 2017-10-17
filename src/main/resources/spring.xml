@@ -7,13 +7,16 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd
 "> 
 
 	<!-- 引入属性文件 -->
-	<context:property-placeholder location="classpath:config.properties" />
-
+	<context:property-placeholder location="classpath:config.properties" ignore-unresolvable="true"/>
+    <context:property-placeholder location="classpath:redis.properties" ignore-unresolvable="true"  />
 	<!-- 自动扫描(自动注入) -->
 	<context:component-scan base-package="com.xProgram.manage.service" />
 	
 	<context:component-scan base-package="com.xProgram.manage.serviceImpl" />
 
+  <context:component-scan base-package="com.xProgram.inswept.topic.consumer"></context:component-scan>
+    <context:component-scan base-package="com.xProgram.inswept.topic.producer"></context:component-scan>
+	<context:component-scan base-package="com.xProgram.manage.redis"></context:component-scan>
 	<!-- <bean id="keyMapper" class="com.xProgram.manage.mapper.KeyMapper">
 	</bean> -->
 </beans>
