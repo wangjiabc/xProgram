@@ -140,6 +140,11 @@ public class testController {
 		return map;
 	}
 	
+	@RequestMapping("getKey")
+	public @ResponseBody Set getKey(){
+		return orderDao.getAll();
+	}
+	
 	@RequestMapping("del")
 	public @ResponseBody Integer del(@RequestParam String id){
 		orderDao.delete(id);
