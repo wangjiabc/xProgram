@@ -38,11 +38,11 @@
 	<!-- ====Consumer side start====-->
 	
 	
-	<!-- 定义Topic监听器 -->
+	<!-- 定义Topic监听器 
 	<jms:listener-container destination-type="topic" container-type="default" connection-factory="connectionFactory" acknowledge="auto">
 		<jms:listener destination="general" ref="topicReceiver"/>
 		<jms:listener destination="general" ref="topicReceiver2"/>
 	</jms:listener-container>
-	
+	-->
 	<!-- ====Consumer side end==== -->
 </beans>  
